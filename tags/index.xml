@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on ROESIN&#43;</title>
+    <link>https://roesinn.github.io/tags/</link>
+    <description>Recent content in Tags on ROESIN&#43;</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>ROESIN</copyright>
+    <lastBuildDate>Tue, 16 Jun 2020 10:24:28 +0200</lastBuildDate><atom:link href="https://roesinn.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MPC</title>
+      <link>https://roesinn.github.io/tags/mpc/</link>
+      <pubDate>Tue, 16 Jun 2020 10:24:28 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/mpc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SecureComupation</title>
+      <link>https://roesinn.github.io/tags/securecomupation/</link>
+      <pubDate>Sun, 14 Jun 2020 19:15:41 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/securecomupation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cryptography</title>
+      <link>https://roesinn.github.io/tags/cryptography/</link>
+      <pubDate>Mon, 01 Jun 2020 00:06:15 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/cryptography/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>css</title>
+      <link>https://roesinn.github.io/tags/css/</link>
+      <pubDate>Mon, 13 Apr 2020 17:11:49 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/css/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://roesinn.github.io/tags/security/</link>
+      <pubDate>Sun, 01 Mar 2020 12:35:11 -0500</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>blog</title>
+      <link>https://roesinn.github.io/tags/blog/</link>
+      <pubDate>Sun, 23 Feb 2020 12:35:11 -0500</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>index</title>
+      <link>https://roesinn.github.io/tags/index/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://roesinn.github.io/tags/index/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

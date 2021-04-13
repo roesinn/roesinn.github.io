@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 混淆电路(二)：混淆电路构造的优化 | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="混淆电路(二)：混淆电路构造的优化" />
+<meta property="og:description" content="Garbled Circuit, secure two-party computation, secure multiple-party computation; 混淆电路，姚期智，安全两方计算，安全多方计算" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/garbledcircuit2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-06-12T17:04:41&#43;02:00" />
+<meta property="article:modified_time" content="2020-06-12T17:04:41&#43;02:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="混淆电路(二)：混淆电路构造的优化"/>
+<meta name="twitter:description" content="Garbled Circuit, secure two-party computation, secure multiple-party computation; 混淆电路，姚期智，安全两方计算，安全多方计算"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <p>自姚1986年提出混淆电路构造(GC Construction)以来，许多学者都对这种构造进行了优化。目前最高效的GC构造是<strong>HalfGates</strong>方案，它的电路规模(size)、加密代价(Garbled cost)和&quot;解密&quot;代价(Evaluation cost)都非常小。这些构造都属于<strong>基于电路的安全两方计算</strong>协议。</p>
+<p>到目前为止，混淆电路构造有以下几个非常关键的优化方案：</p>
+<ul>
+<li><strong>Point-and-Permute</strong>方案<!-- raw HTML omitted --><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted -->(1990)：用 1 bit 的信号位指出混淆表中解密的位置，提高了解密效率。</li>
+<li><strong>3-row reduction</strong>方案<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted -->(1999)：将每张混淆表的密文数量从4行减少为3行。</li>
+<li><strong>Free-XOR</strong>方案<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted -->(2008)：不需要混淆表，计算代价很小。</li>
+<li><strong>2-row reduction</strong>方案<!-- raw HTML omitted --><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup><!-- raw HTML omitted -->(2009)：将每张表的密文数量减少为2行。</li>
+<li><strong>Garbling via AES</strong>方案<!-- raw HTML omitted --><sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><!-- raw HTML omitted -->(2012)：对输出使用AES进行加密。</li>
+<li><strong>Fixed-key AES</strong>方案<!-- raw HTML omitted --><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup><!-- raw HTML omitted -->(2013)：只使用AES加密一次。</li>
+<li><strong>FleXor</strong>方案<!-- raw HTML omitted --><sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup><!-- raw HTML omitted -->(2014)</li>
+<li><strong>HalfGates</strong>方案<!-- raw HTML omitted --><sup id="fnref:8"><a href="#fn:8" class="footnote-ref" role="doc-noteref">8</a></sup><!-- raw HTML omitted -->(2015)：目前最高效的方案。</li>
+</ul>
+<h2 id="经典方案cite2cite">经典方案<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted --></h2>
+<blockquote>
+<p>为所有线$$i$$分配随机的密钥对$$\textcolor{green}{k_i}, \textcolor{blue}{K_i}$$.</p>
+<p>对每一个逻辑门使用双重加密，并且随机置换混淆表的位置：</p>
+<ul>
+<li>$$E_{\textcolor{green}a}(E_{\textcolor{green}b}(\textcolor{green}x))$$</li>
+<li>$$E_{\textcolor{green}a}(E_{\textcolor{blue}B}(\textcolor{green}x))$$</li>
+<li>$$E_{\textcolor{blue}A}(E_{\textcolor{green}b}(\textcolor{green}x))$$</li>
+<li>$$E_{\textcolor{blue}A}(E_{\textcolor{blue}B}(\textcolor{blue}X))$$</li>
+</ul>
+<p>输出：每一条输出线$$i$$有映射$$[(\textcolor{green}0,\textcolor{green}{k_i}),(\textcolor{blue}1, \textcolor{blue}{K_i})]$$，即$$\textcolor{green}{k_i}$$为0-key，$$\textcolor{blue}{K_i}$$为1-key。</p>
+</blockquote>
+<p>解密者需要知道<strong>哪一行</strong>可以被成功的解密。可以使用加密方程：</p>
+<ul>
+<li>$$E_k(m)=[r,F_k(r) \oplus (m \parallel 0^{\sigma})]$$, 这里$$F$$是伪随机函数，$$\sigma$$是统计安全参数。表示基于$$F$$的伪随机性，使用错误的$$k$$获得$$0^{\sigma}$$的概率可忽略不计</li>
+</ul>
+<p>解密者需要一行行解密混淆表，直到解密成功。平均需要的双重解密次数为 (1+2+3+4) / 4 = 2.5.</p>
+<h2 id="point-and-permute方案cite1cite">Point-and-Permute方案<!-- raw HTML omitted --><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted --></h2>
+<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->为混淆门每一条线$$i$$选择密钥（混淆值）的同时，选择一个<strong>随机的信号位$$p_i$$</strong>。将该混淆门两条输入线的信号位$$p_i,p_j$$串联在一起，作为指向混淆表位置的指针。</p>
+<p>对于同一条输入线，两种密钥对应的$$p_i$$须为相反数，这样才能让指针指向唯一的条目。假如0-key对应的信号比特是1，那么1-key对应的信号比特就是0。</p>
+<p>如图所示，我们为第一条输入线的密钥$$\tilde {x}^0$$随机选择一个信号位$$1$$，为第二条输入线的密钥$$\tilde {y}^0$$随机选择一个信号位$$0$$，则两条线另外的混淆值$$\tilde{x}^1$$和$$\tilde {y}^1$$的信号位分别是$$0$$和$$1$$。假设输入是$$\tilde {x}^0, \tilde {y}^0$$，将两个信号位串联得到10，因此解密混淆表中的条目2*1+0=2即可。这样，我们就不需要一个个尝试混淆表中的条目了，而是直接选择相应的条目进行解密。</p>
+<p><!-- raw HTML omitted --> <!-- raw HTML omitted --></p>
+<p>Point-and-Permute方案的优点是：</p>
+<ul>
+<li>只需要解密一个条目</li>
+<li>简化了输出解密的过程：如果输出$$\tilde{z}^0$$的信号位是0（即$$\tilde{z}^1$$的信号位是1），那么解密后的输出就是信号位；如果输出$$\tilde{z}^0$$的信号位是1（即$$\tilde{z}^1$$的信号位是0），那么解密后的输出就是信号位相反数。</li>
+</ul>
+<p>在接下来的方案中，我们默认使用point-and-permute方案。$$p(k)$$是密钥k的信号位。</p>
+<h2 id="3-row-reduction方案cite2cite">3-Row Reduction方案<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted --></h2>
+<p>设一个编号为$$T$$的混淆门左输入线的密钥为$$k_l$$, 右输入线的密钥为$$k_r$$, 输出线的密钥为$$k_o$$. 使用伪随机函数$$F$$ (比如AES) 将密钥信号位和混淆门编号$$T$$的长度扩展为密钥的长度。</p>
+<p>令加密函数为$$E^T(k_l,k_r;k_o)=k_0 \oplus F(k_l),p(k_l) \parallel T \oplus F(k_r,p(k_r) \parallel T)$$.</p>
+<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->通过将混淆表第一条加密值设置为0，即<strong>消除混淆表的第一行</strong>，来减少通信量。假设第一条的输入密钥为$$\textcolor{green}a, \textcolor{green}b$$，输出密钥为$$\textcolor{green}c$$。</p>
+<p>$$E^T(\textcolor{green}a,\textcolor{green}b;\textcolor{green}c)=\textcolor{green}c \oplus F(\textcolor{green}a),p(\textcolor{green}a) \parallel T \oplus F(\textcolor{green}b,p(\textcolor{green}b) \parallel T) \bf{=0}$$ $$\rArr \textcolor{green}c=F(\textcolor{green}a,p(\textcolor{green}a) \parallel T) \oplus F(\textcolor{green}b,p(\textcolor{green}b) \parallel T)$$
+$$\rArr$$其中一个输出密钥 (这里是$$\textcolor{green}c$$) 可以由输入密钥求得。</p>
+<p>表中剩下3行不变：</p>
+<ul>
+<li>$$E^T(\textcolor{green}a,\textcolor{blue}B;\textcolor{green}c)$$</li>
+<li>$$E^T(\textcolor{blue}A,\textcolor{green}b;\textcolor{green}c)$$</li>
+<li>$$E^T(\textcolor{blue}A,\textcolor{blue}B;\textcolor{blue}C)$$</li>
+</ul>
+<p>3-Row Reduction方案的优点是：将每张表的通信代价从4行减小为3行。</p>
+<h2 id="free-xor方案cite3cite">Free XOR方案<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted --></h2>
+<p>该方案针对逻辑操作为<strong>异或</strong>的混淆门。</p>
+<p>令加密函数为$$E^T(k_l,k_r;k_o)=k_0 \oplus H(k_l \parallel k_r \parallel T)$$. 这里H是随机预言机RO, 可以用SHA-2实现。</p>
+<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->选择密钥对，使得每一对的<strong>距离为固定值</strong>$$R$$ ($$R$$可取定值128，且对于Client未知)。$$R=\textcolor{green}a \oplus \textcolor{blue}A = \textcolor{green}b \oplus \textcolor{blue}B = \textcolor{green}c \oplus \textcolor{blue}C = &hellip;$$
+设输出密钥$$\textcolor{green}c=\textcolor{green}a \oplus \textcolor{green}b$$。</p>
+<p>正确性(异或操作)：</p>
+<ul>
+<li>$$\textcolor{green}c=\textcolor{green}a \oplus \textcolor{green}b=(R \oplus \textcolor{green}a) \oplus (R \oplus \textcolor{green}b)=\textcolor{blue}A \oplus \textcolor{blue}B$$</li>
+<li>$$\textcolor{blue}C=\textcolor{green}c \oplus R = \textcolor{green}a \oplus \textcolor{green}b \oplus R = \textcolor{green}a \oplus \textcolor{blue}B=\textcolor{blue}A \oplus \textcolor{green}b$$</li>
+</ul>
+<p>安全性：</p>
+<ul>
+<li>Client只知道每条线的一个密钥，无法求出$$R$$</li>
+<li>需要使用随机预言机RO</li>
+</ul>
+<p>Free-XOR方案的优点是：计算代价很小，通信代价为0，即不需要将混淆表发送给对方。</p>
+<h2 id="使用aes加密">使用AES加密</h2>
+<p>从2008年起，很多Intel和AMD的CPU都有了AES的硬件支持，即AES-NI。</p>
+<p>KreuterSS12<!-- raw HTML omitted --><sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><!-- raw HTML omitted -->方案的加密函数为</p>
+<ul>
+<li>$$E^T(k_l,k_r;k_o)=k_o \oplus AES\text{-}256(k_l \parallel k_r; T) \rArr$$ 每个门都需要运行AES。</li>
+</ul>
+<p>BellareHKR13<!-- raw HTML omitted --><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup><!-- raw HTML omitted -->方案使用固定密钥的AES加密：</p>
+<ul>
+<li>选择一个固定的密钥$$X$$并执行一次AES: $$E^T(k_l,k_r;k_o)=k_o \oplus AES\text{-}128(X; K) \oplus K$$, 这里$$K=2k_l \oplus 4k_r \oplus T$$</li>
+</ul>
+<p>这两种方案都可以与free-XOR和3-row reduction结合。</p>
+<h2 id="halfgates方案">HalfGates方案</h2>
+<p>HalfGates方案使用了：</p>
+<ul>
+<li>Free XOR</li>
+<li>使用4个加密函数加密AND门</li>
+<li>每个AND门使用2行的混淆表</li>
+<li>使用2个加密函数解密AND门</li>
+</ul>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592148214/blog/1592148197229_qavus6.jpg" alt=""></p>
+<h2 id="比较几种gc构造">比较几种GC构造</h2>
+<p>我们对使用每种方案的两种门<strong>AND门</strong>和<strong>XOR门</strong>在<strong>每张混淆表的密文数量</strong>(size)、<strong>AES加密次数</strong>(garble cost)和<strong>AES解密次数</strong>(eval cost)上进行比较：</p>
+<ul>
+<li>经典方案每张表都包含3*4=12个密文，需要4次双重AES加密，解密平均需要2.5次双重AES加密</li>
+<li>Point-and-Permute每张表只有4个密文，使用4次AES加密，只需1次AES解密</li>
+<li>3-Row Reduction每张表只有3个密文，使用4次AES加密和1次AES解密</li>
+<li>3-Row Reduction + Free XOR对于XOR门，无需使用混淆表，无需进行AES加密和解密；对于AND门，每张表有3个密文，使用4次AES加密和1次AES解密</li>
+<li>HalfGates + Free XOR对于XOR门，无需使用混淆表，无需进行AES加密和解密；对于AND门，每张表有2个密文，使用4次AES加密和2次AES解密</li>
+</ul>
+<p>可以看到HalfGates方案在降低通信代价的同时，提高了计算代价。但实践中，网络传输速度通常是瓶颈，因此通信代价低比计算代价低更为重要。</p>
+<!-- raw HTML omitted -->
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592149548/blog/1592149528665_rocbt0.jpg" alt=""></p>
+<p>下一节介绍适用于安全两方计算的GMW协议。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>D. Beaver, S. Micali, P. Rogaway. The Round Complexity of Secure Protocols. In STOC'90. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>M. Naor, B. Pinkas, R. Sumner. Privacy Preserving Auctions and Mechanism Design. In EC’99. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>V. Kolesnikov, T. Schneider. Improved Garbled Circuit: Free XOR Gates and Applications. In ICALP'08. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>B. Pinkas, T. Schneider, N. P. Smart, S. C. Williams. Secure Two-Party Computation is Practical. In ASIACRYPT'09. <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>B. Kreuter, A. Shelat, C.-H. Shen. Billion-Gate Secure Computation with Malicious Adversaries. In USENIX Security‘12. <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6" role="doc-endnote">
+<p>M. Bellare, V. T. Hoang, S. Keelveedhi, P. Rogaway. Efficient Garbling from a Fixed-Key Blockcipher. In S&amp;P'13. <a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:7" role="doc-endnote">
+<p>V. Kolesnikov, P. Mohassel, M. Rosulek. FleXOR: Flexible garbling for XOR gates that beats free- XOR. In CRYPTO'14. <a href="#fnref:7" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:8" role="doc-endnote">
+<p>S. Zahur, M. Rosulek, D. Evans. Two Halves Make a Whole - Reducing Data Transfer in Garbled Circuits Using Half Gates. In EUROCRYPT'15. <a href="#fnref:8" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

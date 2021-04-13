@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 安全多方计算协议 | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="安全多方计算协议" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/mpc/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-06-16T10:24:28&#43;02:00" />
+<meta property="article:modified_time" content="2020-06-16T10:24:28&#43;02:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="安全多方计算协议"/>
+<meta name="twitter:description" content=""/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <h1 id="gmw协议">GMW协议</h1>
+<h4 id="gmw协议的基本想法">GMW协议的基本想法</h4>
+<p>参与者$$P_i$$使用$$(n,n)$$<strong>秘密分割方案</strong>，将1个比特$$s$$秘密分享给其余参与者$$P_1, &hellip;, P_N$$. <!-- raw HTML omitted -->
+秘密分割方案如下：</p>
+<blockquote>
+<p>$$s=s_1 \oplus &hellip; \oplus s_N$$</p>
+</blockquote>
+<h4 id="gmw协议的流程">GMW协议的流程</h4>
+<ol>
+<li>每个参与者$$P_i$$把自己的秘密输入进行分割，并把相应的秘密发送给其他的参与者。</li>
+<li>参与者用得到的秘密对电路联合求值。</li>
+<li>每个参与者$$P_j$$接收其他参与者的输出秘密，并恢复明文输出。</li>
+</ol>
+<h4 id="gmw的特点">GMW的特点</h4>
+<p>N个参与者的GMW协议由如下特点 (和2个参与者的GMW类似) :</p>
+<ul>
+<li>Full threshold: GMW允许最多N-1个腐败参与者</li>
+<li>Free-XOR: 布尔电路XOR门的运算可以本地进行。</li>
+</ul>
+<h4 id="and门的求值">AND门的求值</h4>
+<p>半诚实敌手模型：计算方存在获取其他计算方原始数据的需求，但仍按照计算协议执行。半诚实关系即参与方之间有一定的信任关系，适合机构之间的数据计算；一个半诚实成员完全遵守协议的执行过程，中途不退出协议的执行过程，也不篡改协议运行结果，但其可以保留执行协议过程中的一些中间结果，并通过这些中间结果试图分析推导其他成员的输入数据。</p>
+<p>恶意敌手模型：参与方根本就不按照计算协议执行计算过程，能够随意中断协议的运行，破坏协议的正常执行过程，也能随意修改协议的中间结果或者与其他参与方相互勾结。参与方可采用任何（恶意）方式与对方通信，且没有任何信任关系。结果可能是协议执行不成功，双方得不到任何数据；或者协议执行成功，双方仅知道计算结果。更多适用于个人之间、或者个人与机构之间的数据计算。</p>
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

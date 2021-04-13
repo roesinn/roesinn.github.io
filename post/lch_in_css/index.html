@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> CSS中的LCH颜色 | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="CSS中的LCH颜色" />
+<meta property="og:description" content="在W3C发布的CSS Color 4中定义了LCH颜色。它使用三个参数：亮度、彩度和色相(Lightness, Chroma, Hue)。目前，几乎所有的主流浏览器都已经开始考虑并实施它。
+为什么使用LCH？ 比起我们熟悉的RGB或HSL色彩空间(color space)，LCH有一些非常棒的优点。使它成为了“规则改变者”。为什么这么说呢？
+我们只能在网页中使用部分颜色 目前，我们可以指定的每个CSS颜色，都被定义在sRGB色彩空间里。这在几年前是足够的，因为除了专业显示器，所有显示器的色域（可能显示的颜色范围）都比sRGB小。然而今天多数显示器的色域更接近P3，P3的容量比sRGB大50%左右1，但CSS却无法使用它们。换句话说，现代显示器约三分之一的颜色空间都无法为我们所用，而这些正是屏幕上能显示的最生动的颜色。
+RGB是设备相关的，而LCH和Lab是独立于设备的，它们可以代表人类视觉的整个范围，因此无论硬件如何发展，它们都可以工作。
+LCH（与Lab）在视觉上是均匀的 在LCH中，相同的坐标数值变化会产生相同的感知色差，这种色彩空间的属性被称为「视觉均匀性（Perceptual uniformity）」。RGB或HSL在视觉上是不均匀的。请看下面这个例子：
+第一行的颜色和第二行的颜色在色相（hue）上都只差了20度，但给人的视觉差异感却完全不同，很明显，第一行对比更加强烈。
+LCH的亮度实际上是有意义的 在HSL中，亮度值（lightness）是无意义的。有着同样亮度值的两种颜色，感觉到的亮度差异却极大。
+这两种颜色的亮度值都是50%，但它们的亮度肯定不一样。有人认为，至少亮度值对色相饱和度（saturation）是有影响的，的确，如果我们增加HSL亮度，颜色会变浅，如果我们减少HSL亮度，颜色会变深，但这并不一定是相同的颜色：
+这两种颜色都有相同的色调和饱和度，但它们真的看起来像相同颜色的深色调和浅色调?
+对于LCH，任何具有相同亮度(lightness)的颜色都具有相同的感知亮度，任何具有相同彩度(chroma)的颜色都具有相同的感知饱和度。
+LCH是如何作用的？ LCH的三个参数（亮度、彩度和色相）大致对应于HSL，但有一些关键的区别。
+LCH的色相角度并不完全符合HSL的色相。例如，0不是红色，更像是品红；180不是绿松石色，更像是蓝绿色，这两者是完全互补的。
+注意这些颜色，尽管色相值差距很大，但它们的视觉亮度是一样的。
+在HSL中，饱和度的范围是0-100%，因为它是RGB到极坐标的简单转换。然而在LCH中，彩度在理论上是无界的。LCH（与Lab类似）被设计为一种能够描绘人类视觉全部光谱的工具，但并不是所有这些颜色都能在屏幕上显示出来，即使是P3屏幕。颜色的最大浓度值取决于屏幕色域，甚至颜色也是如此。
+通过一个例子可以更好地理解这一点。为简单起见，假设我们的屏幕的色域与sRGB色彩空间完全匹配（事实上，2013年的MacBook Air的屏幕色域约为sRGB的60%，大多数现代屏幕色域约为sRGB的150%)。对于L= 50 H=180（上面的青色），最大彩度只有35。对于L= 50 H=0（上面的品红色），彩度可以达到77，且不超过sRGB的界限。对于L=50 H=320（上面紫色的部分），彩度可以上升到108。
+虽然这种不确定性可能会令人不安，但不要担心：如果你使用了一个在给定显示器中不能显示的颜色，它将被缩小，以便在保持其本质的同时变得可见。毕竟，这并不是什么新鲜事：在显示器的色域超过sRGB之前，这就是在色域小于sRGB的监视器中显示常规CSS颜色时所发生的情况。
+一个LCH颜色选择器 CSS Color 5的编辑Lea Verou制作了一个用Mavo实现的LCH颜色选择器。
+这个LCH颜色选择器还不能显示sRGB之外的颜色，因为它是用web技术实现的，而sRGB之外的颜色现在不能用CSS显示。它会减少彩度，直到颜色在sRGB内。这就是为什么在超过某个数值之后，增加彩度不会产生一个更亮的颜色。
+本文原作者Lea Verou。
+  Tweet from Chirs Lilley, Jan 22, 2020, Jan 22, 2020. &#x21a9;&#xfe0e;
+   " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/lch_in_css/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-04-13T17:11:49&#43;02:00" />
+<meta property="article:modified_time" content="2020-04-13T17:11:49&#43;02:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CSS中的LCH颜色"/>
+<meta name="twitter:description" content="在W3C发布的CSS Color 4中定义了LCH颜色。它使用三个参数：亮度、彩度和色相(Lightness, Chroma, Hue)。目前，几乎所有的主流浏览器都已经开始考虑并实施它。
+为什么使用LCH？ 比起我们熟悉的RGB或HSL色彩空间(color space)，LCH有一些非常棒的优点。使它成为了“规则改变者”。为什么这么说呢？
+我们只能在网页中使用部分颜色 目前，我们可以指定的每个CSS颜色，都被定义在sRGB色彩空间里。这在几年前是足够的，因为除了专业显示器，所有显示器的色域（可能显示的颜色范围）都比sRGB小。然而今天多数显示器的色域更接近P3，P3的容量比sRGB大50%左右1，但CSS却无法使用它们。换句话说，现代显示器约三分之一的颜色空间都无法为我们所用，而这些正是屏幕上能显示的最生动的颜色。
+RGB是设备相关的，而LCH和Lab是独立于设备的，它们可以代表人类视觉的整个范围，因此无论硬件如何发展，它们都可以工作。
+LCH（与Lab）在视觉上是均匀的 在LCH中，相同的坐标数值变化会产生相同的感知色差，这种色彩空间的属性被称为「视觉均匀性（Perceptual uniformity）」。RGB或HSL在视觉上是不均匀的。请看下面这个例子：
+第一行的颜色和第二行的颜色在色相（hue）上都只差了20度，但给人的视觉差异感却完全不同，很明显，第一行对比更加强烈。
+LCH的亮度实际上是有意义的 在HSL中，亮度值（lightness）是无意义的。有着同样亮度值的两种颜色，感觉到的亮度差异却极大。
+这两种颜色的亮度值都是50%，但它们的亮度肯定不一样。有人认为，至少亮度值对色相饱和度（saturation）是有影响的，的确，如果我们增加HSL亮度，颜色会变浅，如果我们减少HSL亮度，颜色会变深，但这并不一定是相同的颜色：
+这两种颜色都有相同的色调和饱和度，但它们真的看起来像相同颜色的深色调和浅色调?
+对于LCH，任何具有相同亮度(lightness)的颜色都具有相同的感知亮度，任何具有相同彩度(chroma)的颜色都具有相同的感知饱和度。
+LCH是如何作用的？ LCH的三个参数（亮度、彩度和色相）大致对应于HSL，但有一些关键的区别。
+LCH的色相角度并不完全符合HSL的色相。例如，0不是红色，更像是品红；180不是绿松石色，更像是蓝绿色，这两者是完全互补的。
+注意这些颜色，尽管色相值差距很大，但它们的视觉亮度是一样的。
+在HSL中，饱和度的范围是0-100%，因为它是RGB到极坐标的简单转换。然而在LCH中，彩度在理论上是无界的。LCH（与Lab类似）被设计为一种能够描绘人类视觉全部光谱的工具，但并不是所有这些颜色都能在屏幕上显示出来，即使是P3屏幕。颜色的最大浓度值取决于屏幕色域，甚至颜色也是如此。
+通过一个例子可以更好地理解这一点。为简单起见，假设我们的屏幕的色域与sRGB色彩空间完全匹配（事实上，2013年的MacBook Air的屏幕色域约为sRGB的60%，大多数现代屏幕色域约为sRGB的150%)。对于L= 50 H=180（上面的青色），最大彩度只有35。对于L= 50 H=0（上面的品红色），彩度可以达到77，且不超过sRGB的界限。对于L=50 H=320（上面紫色的部分），彩度可以上升到108。
+虽然这种不确定性可能会令人不安，但不要担心：如果你使用了一个在给定显示器中不能显示的颜色，它将被缩小，以便在保持其本质的同时变得可见。毕竟，这并不是什么新鲜事：在显示器的色域超过sRGB之前，这就是在色域小于sRGB的监视器中显示常规CSS颜色时所发生的情况。
+一个LCH颜色选择器 CSS Color 5的编辑Lea Verou制作了一个用Mavo实现的LCH颜色选择器。
+这个LCH颜色选择器还不能显示sRGB之外的颜色，因为它是用web技术实现的，而sRGB之外的颜色现在不能用CSS显示。它会减少彩度，直到颜色在sRGB内。这就是为什么在超过某个数值之后，增加彩度不会产生一个更亮的颜色。
+本文原作者Lea Verou。
+  Tweet from Chirs Lilley, Jan 22, 2020, Jan 22, 2020. &#x21a9;&#xfe0e;
+   "/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <p>在W3C发布的<a href="https://www.w3.org/TR/css-color-4/#specifying-lab-lch">CSS Color 4</a>中定义了LCH颜色。它使用三个参数：亮度、彩度和色相(Lightness, Chroma, Hue)。目前，几乎所有的主流浏览器都已经开始考虑并实施它。</p>
+<h2 id="为什么使用lch">为什么使用LCH？</h2>
+<p>比起我们熟悉的RGB或HSL色彩空间(color space)，LCH有一些非常棒的优点。使它成为了“规则改变者”。为什么这么说呢？</p>
+<h3 id="我们只能在网页中使用部分颜色">我们只能在网页中使用部分颜色</h3>
+<p>目前，我们可以指定的每个CSS颜色，都被定义在sRGB色彩空间里。这在几年前是足够的，因为除了专业显示器，所有显示器的色域（可能显示的颜色范围）都比sRGB小。然而今天多数显示器的色域更接近<a href="https://en.wikipedia.org/wiki/DCI-P3">P3</a>，P3的容量比sRGB大50%左右<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>，但CSS却无法使用它们。换句话说，现代显示器约三分之一的颜色空间都无法为我们所用，而这些正是屏幕上能显示的最生动的颜色。</p>
+<p><img src="http://lea.verou.me/wp-content/uploads/2020/04/srgb-vs-p3.png" alt="sRGB和P3的色域容量"></p>
+<p>RGB是设备相关的，而LCH和Lab是独立于设备的，它们可以代表人类视觉的整个范围，因此无论硬件如何发展，它们都可以工作。</p>
+<h3 id="lch与lab在视觉上是均匀的">LCH（与Lab）在视觉上是均匀的</h3>
+<p>在LCH中，相同的坐标数值变化会产生相同的感知色差，这种色彩空间的属性被称为「视觉均匀性（Perceptual uniformity）」。RGB或HSL在视觉上是不均匀的。请看下面这个例子：</p>
+<p><img src="http://lea.verou.me/wp-content/uploads/2020/04/image-3.png" alt=""></p>
+<p>第一行的颜色和第二行的颜色在色相（hue）上都只差了20度，但给人的视觉差异感却完全不同，很明显，第一行对比更加强烈。</p>
+<h3 id="lch的亮度实际上是有意义的">LCH的亮度实际上是有意义的</h3>
+<p>在HSL中，亮度值（lightness）是无意义的。有着同样亮度值的两种颜色，感觉到的亮度差异却极大。</p>
+<p><img src="http://lea.verou.me/wp-content/uploads/2020/04/image-4.png" alt=""></p>
+<p>这两种颜色的亮度值都是50%，但它们的亮度肯定不一样。有人认为，至少亮度值对色相饱和度（saturation）是有影响的，的确，如果我们增加HSL亮度，颜色会变浅，如果我们减少HSL亮度，颜色会变深，但这并不一定是相同的颜色：</p>
+<p><img src="http://lea.verou.me/wp-content/uploads/2020/04/image-5.png" alt=""></p>
+<p>这两种颜色都有相同的色调和饱和度，但它们真的看起来像相同颜色的深色调和浅色调?</p>
+<p>对于LCH，任何具有相同亮度(lightness)的颜色都具有相同的感知亮度，任何具有相同彩度(chroma)的颜色都具有相同的感知饱和度。</p>
+<h2 id="lch是如何作用的">LCH是如何作用的？</h2>
+<p>LCH的三个参数（亮度、彩度和色相）大致对应于HSL，但有一些关键的区别。</p>
+<p>LCH的色相角度并不完全符合HSL的色相。例如，0不是红色，更像是品红；180不是绿松石色，更像是蓝绿色，这两者是完全互补的。</p>
+<p><img src="http://lea.verou.me/wp-content/uploads/2020/04/image-8.png" alt=""></p>
+<p>注意这些颜色，尽管色相值差距很大，但它们的视觉亮度是一样的。</p>
+<p>在HSL中，饱和度的范围是0-100%，因为它是RGB到极坐标的简单转换。然而在LCH中，<strong>彩度在理论上是无界的</strong>。LCH（与Lab类似）被设计为一种能够描绘人类视觉全部光谱的工具，但并不是所有这些颜色都能在屏幕上显示出来，即使是P3屏幕。<strong>颜色的最大浓度值取决于屏幕色域，甚至颜色也是如此。</strong></p>
+<p>通过一个例子可以更好地理解这一点。为简单起见，假设我们的屏幕的色域与sRGB色彩空间完全匹配（事实上，2013年的MacBook Air的屏幕色域约为sRGB的60%，大多数现代屏幕色域约为sRGB的150%)。对于L= 50 H=180（上面的青色），最大彩度只有35。对于L= 50 H=0（上面的品红色），彩度可以达到77，且不超过sRGB的界限。对于L=50 H=320（上面紫色的部分），彩度可以上升到108。</p>
+<p>虽然这种不确定性可能会令人不安，但不要担心：如果你使用了一个在给定显示器中不能显示的颜色，它将被缩小，以便在保持其本质的同时变得可见。毕竟，这并不是什么新鲜事：在显示器的色域超过sRGB之前，这就是在色域小于sRGB的监视器中显示常规CSS颜色时所发生的情况。</p>
+<h2 id="一个lch颜色选择器">一个LCH颜色选择器</h2>
+<p>CSS Color 5的编辑Lea Verou制作了一个用Mavo实现的<a href="https://css.land/lch/">LCH颜色选择器</a>。</p>
+<p><img src="http://lea.verou.me/wp-content/uploads/2020/04/image-1.png" alt=""></p>
+<p>这个LCH颜色选择器还不能显示sRGB之外的颜色，因为它是用web技术实现的，而sRGB之外的颜色现在不能用CSS显示。它会减少彩度，直到颜色在sRGB内。这就是为什么在超过某个数值之后，增加彩度不会产生一个更亮的颜色。</p>
+<p><a href="http://lea.verou.me/2020/04/lch-colors-in-css-what-why-and-how/">本文</a>原作者Lea Verou。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="https://twitter.com/svgeesus/status/1220029106248716288">Tweet</a> from Chirs Lilley, Jan 22, 2020, Jan 22, 2020. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

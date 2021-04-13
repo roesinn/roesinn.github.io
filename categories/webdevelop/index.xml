@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WebDevelop on ROESIN&#43;</title>
+    <link>https://roesinn.github.io/categories/webdevelop/</link>
+    <description>Recent content in WebDevelop on ROESIN&#43;</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>ROESIN</copyright>
+    <lastBuildDate>Mon, 13 Apr 2020 17:11:49 +0200</lastBuildDate><atom:link href="https://roesinn.github.io/categories/webdevelop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CSS中的LCH颜色</title>
+      <link>https://roesinn.github.io/post/lch_in_css/</link>
+      <pubDate>Mon, 13 Apr 2020 17:11:49 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/lch_in_css/</guid>
+      <description>在W3C发布的CSS Color 4中定义了LCH颜色。它使用三个参数：亮度、彩度和色相(Lightness, Chroma, Hue)。目前，几乎所有的主流浏览器都已经开始考虑并实施它。
+为什么使用LCH？ 比起我们熟悉的RGB或HSL色彩空间(color space)，LCH有一些非常棒的优点。使它成为了“规则改变者”。为什么这么说呢？
+我们只能在网页中使用部分颜色 目前，我们可以指定的每个CSS颜色，都被定义在sRGB色彩空间里。这在几年前是足够的，因为除了专业显示器，所有显示器的色域（可能显示的颜色范围）都比sRGB小。然而今天多数显示器的色域更接近P3，P3的容量比sRGB大50%左右1，但CSS却无法使用它们。换句话说，现代显示器约三分之一的颜色空间都无法为我们所用，而这些正是屏幕上能显示的最生动的颜色。
+RGB是设备相关的，而LCH和Lab是独立于设备的，它们可以代表人类视觉的整个范围，因此无论硬件如何发展，它们都可以工作。
+LCH（与Lab）在视觉上是均匀的 在LCH中，相同的坐标数值变化会产生相同的感知色差，这种色彩空间的属性被称为「视觉均匀性（Perceptual uniformity）」。RGB或HSL在视觉上是不均匀的。请看下面这个例子：
+第一行的颜色和第二行的颜色在色相（hue）上都只差了20度，但给人的视觉差异感却完全不同，很明显，第一行对比更加强烈。
+LCH的亮度实际上是有意义的 在HSL中，亮度值（lightness）是无意义的。有着同样亮度值的两种颜色，感觉到的亮度差异却极大。
+这两种颜色的亮度值都是50%，但它们的亮度肯定不一样。有人认为，至少亮度值对色相饱和度（saturation）是有影响的，的确，如果我们增加HSL亮度，颜色会变浅，如果我们减少HSL亮度，颜色会变深，但这并不一定是相同的颜色：
+这两种颜色都有相同的色调和饱和度，但它们真的看起来像相同颜色的深色调和浅色调?
+对于LCH，任何具有相同亮度(lightness)的颜色都具有相同的感知亮度，任何具有相同彩度(chroma)的颜色都具有相同的感知饱和度。
+LCH是如何作用的？ LCH的三个参数（亮度、彩度和色相）大致对应于HSL，但有一些关键的区别。
+LCH的色相角度并不完全符合HSL的色相。例如，0不是红色，更像是品红；180不是绿松石色，更像是蓝绿色，这两者是完全互补的。
+注意这些颜色，尽管色相值差距很大，但它们的视觉亮度是一样的。
+在HSL中，饱和度的范围是0-100%，因为它是RGB到极坐标的简单转换。然而在LCH中，彩度在理论上是无界的。LCH（与Lab类似）被设计为一种能够描绘人类视觉全部光谱的工具，但并不是所有这些颜色都能在屏幕上显示出来，即使是P3屏幕。颜色的最大浓度值取决于屏幕色域，甚至颜色也是如此。
+通过一个例子可以更好地理解这一点。为简单起见，假设我们的屏幕的色域与sRGB色彩空间完全匹配（事实上，2013年的MacBook Air的屏幕色域约为sRGB的60%，大多数现代屏幕色域约为sRGB的150%)。对于L= 50 H=180（上面的青色），最大彩度只有35。对于L= 50 H=0（上面的品红色），彩度可以达到77，且不超过sRGB的界限。对于L=50 H=320（上面紫色的部分），彩度可以上升到108。
+虽然这种不确定性可能会令人不安，但不要担心：如果你使用了一个在给定显示器中不能显示的颜色，它将被缩小，以便在保持其本质的同时变得可见。毕竟，这并不是什么新鲜事：在显示器的色域超过sRGB之前，这就是在色域小于sRGB的监视器中显示常规CSS颜色时所发生的情况。
+一个LCH颜色选择器 CSS Color 5的编辑Lea Verou制作了一个用Mavo实现的LCH颜色选择器。
+这个LCH颜色选择器还不能显示sRGB之外的颜色，因为它是用web技术实现的，而sRGB之外的颜色现在不能用CSS显示。它会减少彩度，直到颜色在sRGB内。这就是为什么在超过某个数值之后，增加彩度不会产生一个更亮的颜色。
+本文原作者Lea Verou。
+  Tweet from Chirs Lilley, Jan 22, 2020, Jan 22, 2020. &amp;#x21a9;&amp;#xfe0e;
+   </description>
+    </item>
+    
+  </channel>
+</rss>

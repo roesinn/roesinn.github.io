@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>security on ROESIN&#43;</title>
+    <link>https://roesinn.github.io/tags/security/</link>
+    <description>Recent content in security on ROESIN&#43;</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>ROESIN</copyright>
+    <lastBuildDate>Sun, 01 Mar 2020 12:35:11 -0500</lastBuildDate><atom:link href="https://roesinn.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I2P，Tor和VPN哪个更安全?</title>
+      <link>https://roesinn.github.io/post/i2pvpntor/</link>
+      <pubDate>Sun, 01 Mar 2020 12:35:11 -0500</pubDate>
+      
+      <guid>https://roesinn.github.io/post/i2pvpntor/</guid>
+      <description>&lt;p&gt;翻译自&lt;a href=&#34;https://www.makeuseof.com/tag/i2p-vs-tor-vs-vpn-secure/&#34;&gt;原文&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;当我们讨论到安全和隐私时，有几个常见的缩写词在到处流传。你可能会看到隐私匿名浏览器Tor和VPN经常出现在在主流媒体文章，还有另一个值得考虑的选择：I2P。&lt;/p&gt;
+&lt;p&gt;但哪一种适合你呢？让我们探讨一下什么是I2P、Tor和VPN，&lt;strong&gt;以及哪一个适合你&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

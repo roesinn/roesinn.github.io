@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> OT扩展及优化 | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="OT扩展及优化" />
+<meta property="og:description" content="我们有许多基于公钥密码学的OT协议，但计算代价高昂。而OT又常常用于构建安全计算协议(STPC/SMPC)：通常每个输入比特、每个电路门都要使用OT。计算一个函数要用到上百万个OT，如果只使用基于公钥密码学的OT，计算效率则会极低。
+然而，理论研究表明，没有黑盒压缩能将OT协议简化为单向函数(one-way function)。因此，仅用对称密码学构建OT协议是不可能的。如果使用类似混合加密或OTP加密的方法，是否有可能减少线上的计算代价呢？
+答案是肯定的：
+ OT协议可以被预计算：线下运行昂贵的公钥OT，线上只执行OTP加密。 OT协议可以被扩展 (简称OT扩展)：线下运行昂贵的公钥OT，线上执行较廉价的对称密码操作。  OT预计算的计算代价最小，运行速度最快，但要求线上的消息长度和线下预计算的消息长度一致。而OT扩展则没有这种限制，它在线上可以将线下的消息拉长为任意需要的长度。
+OT扩展的通信双方在线下预先对$\kappa$-bit 短字符串运行基于公钥密码学的OT协议，这种OT称为base OT或real OT。再于线上阶段使用一种对称密码学技巧将base OT扩展为以下两种OT：
+ 可以对长字符串($l$bit)使用的OT1。比如Beaver的OT扩展。 许多能对短字符串($\kappa$bit)执行的OT2。比如著名的 Ishai 的OT扩展。  Beaver的OT扩展 Ishai的OT扩展3 Ishai的OT扩展协议可以将$\kappa$个$OT_2^1$扩展为$m$个有效的$OT_2^1$，可以将消息长度为$\kappa$bit的$OT_2^1$扩展为$l$bit的$OT_2^1$。它和混合加密类似：先使用公钥密码算法，再使用对称密码算法。
+ OT扩展的理想功能性如下：  Alice输入$m$个$l$bit 长的字符对$(x_{j,0}, x_{j,1})$ Bob输入$m$bit 字符串$\bf {r}$, 并在第$j$次OT获得字符串$x_{j,r_i}$   OT扩展协议分为4个阶段。其中 1 为预计算，2-4为线上执行。
+  Alice 和 Bob 颠倒角色执行$\kappa$次 base OT。这种 base OT 基于$\kappa$bit 随机短字符串$(m_{i,0},m_{i,1})$，称为种子。 如图，Bob随机选择$\kappa$个$\kappa$bit 长的字符串对$(m_{i,0},m_{i,1})$, 不经意传输给Alice；Alice输入$\kappa$ bit 随机字符串$\bf {s}$选择$\kappa$对中的$m_{i,s_i}$
+  Bob生成一个$m \times \kappa$bit 的随机矩阵$\bf {T}$。然后拉长base OT的种子作为对称密钥，并与他的选择$\bf {r}$进行OTP加密（打码）。 如图，Bob首先生成一个$$m \times \kappa$$bit 的随机矩阵$\bf {T}$。用伪随机生成器PRG（比如AES）将种子$(m_{i,0},m_{i,1})$拉长($\kappa \to m$bit)，并和$\bf {T}$的每一列异或，对于拉长后的种子$m_{i,1}$，还要再和Bob$$m$bit选择$\bf {r}$异或。这个过程相当于对随机矩阵$\bf {T}$“打码”。 Bob将打码后的矩阵$\bf {T}$发送给Alice。Alice用PRG将她选择的种子$m_{i,s_i}$拉长($\kappa \to m$bit)，解密打码的矩阵$\bf {T}$得到矩阵$\bf {Q}$。若Alice在第$j$对种子里选择了$m_{i,0}$, 则获得$\bf {T}$的第$i$列；若选择了$m_{i,1}$, 则获得$\bf {T}$的第$i$列异或Bob的选择$\bf {r}$。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/otextension/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-06-14T19:17:33&#43;02:00" />
+<meta property="article:modified_time" content="2020-06-14T19:17:33&#43;02:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OT扩展及优化"/>
+<meta name="twitter:description" content="我们有许多基于公钥密码学的OT协议，但计算代价高昂。而OT又常常用于构建安全计算协议(STPC/SMPC)：通常每个输入比特、每个电路门都要使用OT。计算一个函数要用到上百万个OT，如果只使用基于公钥密码学的OT，计算效率则会极低。
+然而，理论研究表明，没有黑盒压缩能将OT协议简化为单向函数(one-way function)。因此，仅用对称密码学构建OT协议是不可能的。如果使用类似混合加密或OTP加密的方法，是否有可能减少线上的计算代价呢？
+答案是肯定的：
+ OT协议可以被预计算：线下运行昂贵的公钥OT，线上只执行OTP加密。 OT协议可以被扩展 (简称OT扩展)：线下运行昂贵的公钥OT，线上执行较廉价的对称密码操作。  OT预计算的计算代价最小，运行速度最快，但要求线上的消息长度和线下预计算的消息长度一致。而OT扩展则没有这种限制，它在线上可以将线下的消息拉长为任意需要的长度。
+OT扩展的通信双方在线下预先对$\kappa$-bit 短字符串运行基于公钥密码学的OT协议，这种OT称为base OT或real OT。再于线上阶段使用一种对称密码学技巧将base OT扩展为以下两种OT：
+ 可以对长字符串($l$bit)使用的OT1。比如Beaver的OT扩展。 许多能对短字符串($\kappa$bit)执行的OT2。比如著名的 Ishai 的OT扩展。  Beaver的OT扩展 Ishai的OT扩展3 Ishai的OT扩展协议可以将$\kappa$个$OT_2^1$扩展为$m$个有效的$OT_2^1$，可以将消息长度为$\kappa$bit的$OT_2^1$扩展为$l$bit的$OT_2^1$。它和混合加密类似：先使用公钥密码算法，再使用对称密码算法。
+ OT扩展的理想功能性如下：  Alice输入$m$个$l$bit 长的字符对$(x_{j,0}, x_{j,1})$ Bob输入$m$bit 字符串$\bf {r}$, 并在第$j$次OT获得字符串$x_{j,r_i}$   OT扩展协议分为4个阶段。其中 1 为预计算，2-4为线上执行。
+  Alice 和 Bob 颠倒角色执行$\kappa$次 base OT。这种 base OT 基于$\kappa$bit 随机短字符串$(m_{i,0},m_{i,1})$，称为种子。 如图，Bob随机选择$\kappa$个$\kappa$bit 长的字符串对$(m_{i,0},m_{i,1})$, 不经意传输给Alice；Alice输入$\kappa$ bit 随机字符串$\bf {s}$选择$\kappa$对中的$m_{i,s_i}$
+  Bob生成一个$m \times \kappa$bit 的随机矩阵$\bf {T}$。然后拉长base OT的种子作为对称密钥，并与他的选择$\bf {r}$进行OTP加密（打码）。 如图，Bob首先生成一个$$m \times \kappa$$bit 的随机矩阵$\bf {T}$。用伪随机生成器PRG（比如AES）将种子$(m_{i,0},m_{i,1})$拉长($\kappa \to m$bit)，并和$\bf {T}$的每一列异或，对于拉长后的种子$m_{i,1}$，还要再和Bob$$m$bit选择$\bf {r}$异或。这个过程相当于对随机矩阵$\bf {T}$“打码”。 Bob将打码后的矩阵$\bf {T}$发送给Alice。Alice用PRG将她选择的种子$m_{i,s_i}$拉长($\kappa \to m$bit)，解密打码的矩阵$\bf {T}$得到矩阵$\bf {Q}$。若Alice在第$j$对种子里选择了$m_{i,0}$, 则获得$\bf {T}$的第$i$列；若选择了$m_{i,1}$, 则获得$\bf {T}$的第$i$列异或Bob的选择$\bf {r}$。"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <p>我们有许多<strong>基于公钥密码学</strong>的OT协议，但计算代价高昂。而OT又常常用于构建安全计算协议(STPC/SMPC)：通常每个输入比特、每个电路门都要使用OT。计算一个函数要用到上百万个OT，如果只使用基于公钥密码学的OT，计算效率则会极低。</p>
+<p>然而，理论研究表明，没有黑盒压缩能将OT协议简化为单向函数(one-way function)。因此，<strong>仅用对称密码学</strong>构建OT协议是不可能的。如果使用类似混合加密或OTP加密的方法，是否有可能减少线上的计算代价呢？</p>
+<p>答案是肯定的：</p>
+<ul>
+<li>OT协议可以被<strong>预计算</strong>：线下运行昂贵的公钥OT，线上只执行OTP加密。</li>
+<li>OT协议可以被<strong>扩展</strong> (简称OT扩展)：线下运行昂贵的公钥OT，线上执行较廉价的对称密码操作。</li>
+</ul>
+<p>OT预计算的计算代价最小，运行速度最快，但要求线上的消息长度和线下预计算的消息长度一致。而OT扩展则没有这种限制，它在线上可以将线下的消息拉长为任意需要的长度。</p>
+<p>OT扩展的通信双方在线下预先对$\kappa$-bit 短字符串运行<strong>基于公钥密码学</strong>的OT协议，这种OT称为base OT或real OT。再于线上阶段使用一种对称密码学技巧将base OT扩展为以下两种OT：</p>
+<ul>
+<li>可以对长字符串($l$bit)使用的OT<!-- raw HTML omitted --><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted -->。比如Beaver的OT扩展。</li>
+<li>许多能对短字符串($\kappa$bit)执行的OT<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted -->。比如著名的 Ishai 的OT扩展。</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="beaver的ot扩展">Beaver的OT扩展</h2>
+<h2 id="ishai的ot扩展cite3cite">Ishai的OT扩展<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted --></h2>
+<p>Ishai的OT扩展协议可以将$\kappa$个$OT_2^1$扩展为$m$个有效的$OT_2^1$，可以将消息长度为$\kappa$bit的$OT_2^1$扩展为$l$bit的$OT_2^1$。它和混合加密类似：先使用公钥密码算法，再使用对称密码算法。</p>
+<blockquote>
+<p>OT扩展的理想功能性如下：
+<img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592822255/blog/1592773757189_ircb2x.jpg" alt=""></p>
+<ol>
+<li>Alice输入$m$个$l$bit 长的字符对$(x_{j,0}, x_{j,1})$</li>
+<li>Bob输入$m$bit 字符串$\bf {r}$, 并在第$j$次OT获得字符串$x_{j,r_i}$</li>
+</ol>
+</blockquote>
+<p>OT扩展协议分为4个阶段。其中 1 为预计算，2-4为线上执行。</p>
+<ol>
+<li>
+<p>Alice 和 Bob 颠倒角色执行$\kappa$次 base OT。这种 base OT 基于$\kappa$bit 随机短字符串$(m_{i,0},m_{i,1})$，称为种子。
+<img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592817699/blog/1592774888971%E5%89%AF%E6%9C%AC_ke42ca.jpg" alt="">
+<!-- raw HTML omitted --> 如图，Bob<!-- raw HTML omitted -->随机<!-- raw HTML omitted -->选择$\kappa$个$\kappa$bit 长的字符串对$(m_{i,0},m_{i,1})$, 不经意传输给Alice；Alice输入$\kappa$ bit <!-- raw HTML omitted -->随机<!-- raw HTML omitted -->字符串$\bf {s}$选择$\kappa$对中的$m_{i,s_i}$</p>
+</li>
+<li>
+<p>Bob生成一个$m \times \kappa$bit 的随机矩阵$\bf {T}$。然后拉长base OT的种子作为对称密钥，并与他的选择$\bf {r}$进行OTP加密（打码）。
+<img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592819495/blog/1592813503255_rriztx.jpg" alt="">
+<!-- raw HTML omitted -->如图，Bob首先生成一个$$m \times \kappa$$bit 的随机矩阵$\bf {T}$。用伪随机生成器PRG（比如AES）将种子$(m_{i,0},m_{i,1})$拉长($\kappa \to m$bit)，并和$\bf {T}$的每一列异或，对于拉长后的种子$m_{i,1}$，还要再和Bob$$m$bit选择$\bf {r}$异或。这个过程相当于对随机矩阵$\bf {T}$“打码”。
+<!-- raw HTML omitted --><!-- raw HTML omitted --> Bob将打码后的矩阵$\bf {T}$发送给Alice。Alice用PRG将她选择的种子$m_{i,s_i}$拉长($\kappa \to m$bit)，解密打码的矩阵$\bf {T}$得到矩阵$\bf {Q}$。若Alice在第$j$对种子里选择了$m_{i,0}$, 则获得$\bf {T}$的第$i$列；若选择了$m_{i,1}$, 则获得$\bf {T}$的第$i$列异或Bob的选择$\bf {r}$。</p>
+</li>
+<li>
+<p>Alice和Bob分别将矩阵$\bf {Q},\bf {T}$转置得到$\bf {Q}^{\prime}, \bf {T}^{\prime}$($\kappa \times m$)。因为内存中的数据要按行读取。</p>
+</li>
+<li>
+<p>Alice将她的输入$x_{j,0}, x_{j,1}$打码，并不经意发送给Bob。<!-- raw HTML omitted --><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592820438/blog/1592814981813_bwtxgs.jpg" alt="">
+<!-- raw HTML omitted --> Alice用哈希函数拉长$\bf {Q}^{\prime}$的每一列$j$($k \to l$bit)，将输$$x_{j,0}$打码得到$y_{j,0}$; Alice用base OT选择的随机字符串$\bf {s}$异或$\bf {Q}^{\prime}$的每一列$j$，并求哈希值，再将输入$x_{j,1}$打码得到$y_{j,1}$。
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Alice将$y_{j,0}, y_{j,1}$不经意发送给Bob。Bob根据$\bf {r}$选择$y_{j,r_j}$, 对$\bf {T}^{\prime}$求哈希值来解密$y_{j,r_j}$，获得字符串$z_j$。</p>
+</li>
+</ol>
+<blockquote>
+<p>原文片段：
+<img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592899892/blog/1592899658750_c9x3a2.jpg" alt=""></p>
+</blockquote>
+<h4 id="ot扩展的正确性">OT扩展的正确性</h4>
+<p>证明$$z_j=x_{j,r_j}$$:</p>
+<ul>
+<li>
+<p>阶段1取决于base OT的正确性</p>
+</li>
+<li>
+<p>阶段2，我们考察$$\bf{Q}$$, $$\bf{T}$$列$$i$$和行$$j$$的对应关系：<!-- raw HTML omitted -->
+$${\bf{Q}} [i]=u_{i,s_i} \oplus PRG(m_{i,s_i})\textcolor{red}{=(s_i \cdot {\bf r}) \oplus {\bf T}[i] = \begin{cases} {\bf T}[i] &amp;\text{if } s_i=0 \\ {\bf r} \oplus {\bf{T}}[i] &amp;\text{if } s_i=1 \end{cases}}$$
+<!-- raw HTML omitted -->若Bob的选择$$r_j=0$$, 则$${\bf{Q}}{[j]}={\bf{T}}{[j]}$$; 若Bob的选择$$r_j=1$$, Alice选择$$s_i=0$$, 则$${\bf{Q}}{[j]}={\bf{T}}{[j]}$$, Alice选择$$s_i=1$$, 则$${\bf{Q}}{[j]}={\bf{T}}{[j]} \oplus 1$$（$$j$$为行）</p>
+</li>
+<li>
+<p>阶段3，Alice转置$$\bf {Q}$$得到：$$\textcolor{red}{{\bf{Q}^{\prime}} [j]=\textcolor{red}(r_j \cdot {\bf s}) \oplus {\bf T}^{\prime}[j] = \begin{cases} {\bf T}^{\prime} [j] &amp;\text{if } r_j=0 \\ {\bf s} \oplus {\bf{T}^{\prime}}[j] &amp;\text{if } r_j=1 \end{cases}}$$</p>
+</li>
+<li>
+<p>阶段4：Bob获得<!-- raw HTML omitted -->$$z_j=y_{j,r_j} \oplus H(j,{\bf T}^{\prime}[j])\textcolor{red}{= \begin{cases} y_{j,0} \oplus H(j,{\bf T}^{\prime}[j])&amp;\text{if } r_j=0 \\ y_{j,1} \oplus H(j,{\bf T}^{\prime}[j]) &amp;\text{if } r_j=1 \end{cases}}$$ <!-- raw HTML omitted --> $$ \textcolor{red}{= \begin{cases} x_{j,0} \oplus H(j,{\bf Q}^{\prime}[j]) \oplus H(j,{\bf T}^{\prime}[j]) &amp;\text{if } r_j=0 \\ x_{j,1} \oplus H(j,{\bf Q}^{\prime}[j] \oplus {\bf{s}}) \oplus H(j,{\bf T}^{\prime}[j])  &amp;\text{if } r_j=1 \end{cases} = \begin{cases} x_{j,0} &amp;\text{if } r_j=0 \\ x_{j,1} &amp;\text{if } r_j=1 \end{cases}=x_{j,r_j}}$$</p>
+</li>
+</ul>
+<h4 id="ot扩展的安全性">OT扩展的安全性</h4>
+<p>使用能抵抗半诚实攻击者的$$OT_1^2$$，OT扩展对半诚实攻击者是安全的。</p>
+<h4 id="ot扩展的计算和通信复杂度">OT扩展的计算和通信复杂度</h4>
+<!-- raw HTML omitted -->
+<h5 id="计算复杂度">计算复杂度</h5>
+<p>OT扩展中的密码学计算用到了<strong>伪随机生成器PRG</strong>和<strong>随机预言机H</strong>。<!-- raw HTML omitted -->对于一次OT扩展过程，有如下计算复杂度：</p>
+<table>
+<thead>
+<tr>
+<th>Per OT</th>
+<th>Alice</th>
+<th>Bob</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td># PRG evaluations</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td># H evaluations</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>但在执行OT扩展时，时间开销如下 (21s内执行10Mio.次OT)：
+<!-- raw HTML omitted --></p>
+<p>如图可见，执行矩阵转置（非密码学操作）的时间占用的比例过大。</p>
+<h2 id="ot扩展的优化">OT扩展的优化</h2>
+<h4 id="算法优化">算法优化</h4>
+<p>高效矩阵转置、并行化。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+ <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></li>
+<li id="fn:2" role="doc-endnote">
+ <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></li>
+<li id="fn:3" role="doc-endnote">
+<p>Y. Ishai, J. Kilian, K. Nissim, E. Petrank: Extending Oblivious Transfers Efficiently. In CRYPTO’03. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

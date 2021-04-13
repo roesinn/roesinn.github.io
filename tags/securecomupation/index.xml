@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SecureComupation on ROESIN&#43;</title>
+    <link>https://roesinn.github.io/tags/securecomupation/</link>
+    <description>Recent content in SecureComupation on ROESIN&#43;</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>ROESIN</copyright>
+    <lastBuildDate>Sun, 14 Jun 2020 19:15:41 +0200</lastBuildDate><atom:link href="https://roesinn.github.io/tags/securecomupation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>混淆电路(三)：GMW协议</title>
+      <link>https://roesinn.github.io/post/garbledcircuit3/</link>
+      <pubDate>Sun, 14 Jun 2020 19:15:41 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit3/</guid>
+      <description>&lt;p&gt;继Yao之后，Goldreich, Micali和Wigderson在1987年提出了另一种用加密布尔电路计算函数的方案，简称GMW协议&lt;!-- raw HTML omitted --&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;!-- raw HTML omitted --&gt;。GMW协议包括&lt;strong&gt;安全两方计算&lt;/strong&gt;及&lt;strong&gt;安全多方计算&lt;/strong&gt;协议。这篇文章介绍GMW安全两方计算协议及优化实现，并与Yao的协议进行比较。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

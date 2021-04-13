@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 混淆电路(一)：姚氏混淆电路协议 | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="混淆电路(一)：姚氏混淆电路协议" />
+<meta property="og:description" content="Garbled Circuit, secure two-party computation, secure multiple-party computation; 混淆电路，姚期智，安全两方计算，安全多方计算" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/garbledcircuit/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-06-09T20:08:06&#43;02:00" />
+<meta property="article:modified_time" content="2020-06-09T20:08:06&#43;02:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="混淆电路(一)：姚氏混淆电路协议"/>
+<meta name="twitter:description" content="Garbled Circuit, secure two-party computation, secure multiple-party computation; 混淆电路，姚期智，安全两方计算，安全多方计算"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <p>随着云计算、协同计算等新型计算模型的出现，仅仅对消息加密已经不能满足人们的安全需求。在交给代理商进行计算之前，用户希望对<strong>输入</strong>和<strong>函数本身</strong>都进行加密，从而达到保护函数“内部信息”的目的，这就是<strong>安全计算</strong>。混淆电路(Garbled Circuit)就是一种对函数或电路加密的方法。</p>
+<p>对函数加密意味着把函数作为一种黑盒，除了想要的输出以外，其他信息都无法获得。或者说，给定输入，只能获得对应的输出。</p>
+<p>简单介绍一下混淆电路的历史：</p>
+<ul>
+<li>混淆电路最初是由Yao(姚期智)在1986年为解决安全两方计算而提出的一种<strong>电路加密技巧</strong><!-- raw HTML omitted --><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted -->，它是一种安全两方计算协议。</li>
+<li>1987年，<a href="https://roesinn.de/post/cryptoproto/garbledcircuit3/">GMW协议</a>将两个参与者扩展为多个<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted -->。</li>
+<li>2008年，Lindell等人第一次提出了混淆电路方案<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted -->。</li>
+<li>2012年，Bellare等人给出了混淆电路具体的形式化定义<!-- raw HTML omitted --><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup><!-- raw HTML omitted -->。</li>
+<li>2013年，Goldwasser等人构造了第一个可重用的混淆电路方案<!-- raw HTML omitted --><sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><!-- raw HTML omitted -->。</li>
+</ul>
+<p>但目前为止，可重用的混淆电路方案都不高效。是否存在更高效的可重用的混淆电路依然是人们关注的问题。除此之外，可重用混淆电路是否可以构造混淆也是一个待探索的问题。</p>
+<p>本文主要关注Yao和GMW的安全两方计算协议，并对两者进行比较。</p>
+<h1 id="安全两方计算">安全两方计算</h1>
+<blockquote>
+<p>安全两方计算(Seure Two-Party Computation)是指两个实体：</p>
+<ul>
+<li>使用任意函数$$f$$</li>
+<li>输入各自的私密数据$$x,y$$</li>
+<li>不依赖第三方</li>
+<li>除了结果$$z=f(x,y)$$外，对其他信息一无所知</li>
+</ul>
+</blockquote>
+<p>该方案的理想功能性(Ideal Functionaility)如下：</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Yao构造的混淆电路方案就是一种安全两方计算协议。</p>
+<h1 id="yao的混淆电路协议cite1cite">Yao的混淆电路协议<!-- raw HTML omitted --><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted --></h1>
+<p>Yao的混淆电路协议是一种<strong>电路加密方案</strong>，它有以下特点：</p>
+<ul>
+<li>可以对任意的函数（作为布尔电路$$C$$）进行加密</li>
+<li>通信代价和计算代价与$$C$$的规模呈线形关系</li>
+<li>轮数是常数</li>
+</ul>
+<p>先来看看什么是混淆电路。</p>
+<h3 id="布尔电路和混淆电路">布尔电路和混淆电路</h3>
+<p>布尔电路是一类特定的计算模型。它通过一些<strong>逻辑门操作</strong>完成<strong>函数的计算功能</strong>。混淆电路是对布尔电路的“加密”，即隐藏电路的门操作种类，甚至是隐藏电路逻辑图。</p>
+<p>我们先来看看什么是布尔电路：</p>
+<ul>
+<li>一个具体的布尔电路$$C$$是一个有向无环图(Directed Acyclic Graph)，它有$$u$$个输入、$$v$$个输出和$$k$$个逻辑门或节点。边称为线(wire)。</li>
+<li><strong>布尔电路的规模</strong>(size)是指其逻辑门的个数，记作$$|C|$$。<strong>布尔电路的深度</strong>(depth)是指从输入顶点到输出顶点最长一条路径的长度，记作$$depth(C)$$。<strong>电路规模衡量一个电路的大小，电路深度衡量的是一次计算需要的时间。</strong></li>
+<li>任何有效的算法（即属于P类）都能被转换成一个多项式规模的布尔电路。</li>
+</ul>
+<p>对于一个传统布尔电路的逻辑门，它的每条输入和输出线上都是布尔值$$0$$或$$1$$。已知一个逻辑门的输入值，通过对照它的真值表，可以获得该逻辑门的输出值，如下图(a)所示。</p>
+<p>怎样才能对布尔电路的进行加密呢？由于布尔电路是用来计算一个函数的，那么加密后的布尔电路也必须能计算这个函数，因此我们要<strong>保留每个逻辑门的功能 (真值表) 和电路拓扑图</strong>；此外，加密后的布尔电路除了对应输出其他信息都不能泄露，我们考虑<strong>使用电路的输入对输出进行加密</strong>，只有相应的输入可以解密真值表的对应条目，获得相应输出。按照这种思路，我们可以定义混淆电路如下：</p>
+<p>对于一个混淆电路的逻辑门，又叫<strong>混淆门</strong>(Garbled Gate)，我们用两个$$\kappa$$bit长的随机密钥$$ \tilde {v}^0 $$和$$ \tilde {v}^1 $$来代替布尔值$$0$$或$$1$$，称为<strong>混淆值</strong>(Garbled Value)，也叫0-key和1-key。混淆门的每条输入和输出线上都是混淆值$$ \tilde {v}^0 $$或$$ \tilde {v}^1 $$。已知混淆门的输入值，通过对照<strong>混淆表</strong>(Garbled Table)，可以获得该混淆门的输出值，如下图(b)所示。</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1591911991/blog/WX20200611-234322_2x_qeyd96.png" alt=""></p>
+<p>对于相同的逻辑门，混淆表的规则和混淆前真值表的规则一致，下图是与($$∧$$)门的混淆规则：</p>
+<ul>
+<li>混淆前的真值表规则: $$x=1, y=0 \to z=0$$</li>
+<li>则混淆后的真值表规则: $$x= \tilde {x}^1, y= \tilde {y}^0 \to z= \tilde {z}^0$$</li>
+</ul>
+<p><!-- raw HTML omitted --> <!-- raw HTML omitted --></p>
+<p>不过这种程度的混淆还不够，我们还要对表中条目的顺序进行打乱，以达到进一步的混淆。下一小节会介绍混淆电路方案的详细思路。</p>
+<h3 id="混淆电路协议的基本构想">混淆电路协议的基本构想</h3>
+<p>混淆电路的基本思路是基于随机选择的**混淆值$$ \tilde {v} $$**来计算，而不是基于明文$$v$$。</p>
+<h5 id="1-混淆值-garbled-values">1. 混淆值 (Garbled Values)</h5>
+<p>混淆值$$ \tilde {v}$$是$$ \tilde {v}^0 $$和$$ \tilde {v}^1 $$中的一个，它们分别对应于明文$$0$$和$$1$$。$$ \tilde {v}^0 $$和$$ \tilde {v}^1 $$是$$\kappa$$bit长的随机密钥 ($$\kappa$$是安全参数，通常取$$\kappa$$=128)。</p>
+<p>一个混淆值$$ \tilde {v}$$不会泄露它对应的明文信息，即对应$$0$$还是$$1$$。
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<h5 id="2-混淆门-garbled-gates">2. 混淆门 (Garbled Gates)</h5>
+<p>混淆门$$ \tilde {G}$$允许进行混淆值的计算。对于混淆输入值$$ \tilde {x} $$和$$ \tilde {y} $$，混淆表$$ \tilde {T}$$只允许恢复相应的混淆输出值$$ \tilde {z} $$，其他值无法恢复。</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1591955192/blog/1591955180196_qjjriq.jpg" alt="">
+<!-- raw HTML omitted --></p>
+<ul>
+<li>对于$$2^2=4$$个组合中的每一组混淆输入值$$ \tilde {x}^i $$和$$ \tilde {y}^j $$，相应的混淆输出值$$ \tilde {z}^{T(i,j)} $$使用$$ \tilde {x}^i $$和$$ \tilde {y}^j $$作为密钥进行对称加密。</li>
+<li>混淆表中的条目是随机排列的，用来消除位置带来的信息泄露。</li>
+<li>对称加密方案$$Enc()$$保证了使用相同的密钥可以成功地解密。</li>
+</ul>
+<h5 id="3-混淆电路-garbled-circuit">3. 混淆电路 (Garbled Circuit)</h5>
+<p>一个混淆电路$$ \tilde {C}$$由许多的混淆门$$ \tilde {G}_i$$组成。</p>
+<p>对混淆电路有两种动态操作：首先是<strong>生成</strong>混淆电路，我们需要先生成一个布尔电路，再以此为基础生成混淆电路；获得混淆电路后，我们就可以利用混淆电路获取相应的混淆输出了，这个过程称为<strong>求值</strong>(Evaluation)。</p>
+<p>生成混淆电路$$ \tilde {C}$$的步骤如下：</p>
+<ul>
+<li>为每一条线$$ w_i $$随机选择两个混淆值 $$ \tilde {w}_i^0, \tilde {w}_i^1$$</li>
+<li>为每一个门$$ G_i $$生成$$ \tilde {G}_i $$的混淆表$$ \tilde {T}_i $$</li>
+<li>$$ \tilde {C}$$由许多的混淆表$$ \tilde {T}_i $$组成（每一个表对应一个混淆门$$ \tilde {G}_i $$）</li>
+</ul>
+<p>对混淆电路$$ \tilde {C}$$进行求值的步骤如下：</p>
+<ul>
+<li>给定混淆输入 ($$ \tilde {C}$$所有输入线的混淆值)</li>
+<li>按照拓扑顺序，使用混淆表$$ \tilde {T}_i $$来对每一个混淆门$$ \tilde {G}_i $$求值</li>
+<li><strong>混淆输出</strong>即是$$ \tilde {C}$$输出线上的混淆值: $$ \tilde {z} =  \tilde {C}(\tilde {x}, \tilde {y})$$</li>
+</ul>
+<h3 id="混淆电路协议流程">混淆电路协议流程</h3>
+<p>Yao的混淆电路协议流程如下：</p>
+<ul>
+<li>生成一个能计算函数$$f$$的布尔电路$$C$$</li>
+<li>Server$$P_2$$生成混淆电路$$ \tilde {C}$$，将它发送给Client$$P_1$$</li>
+<li>Server把对应于明文输入$$x,y$$的混淆输入$$ \tilde {x}^i $$,$$ \tilde {y}^j $$<strong>不经意地传输</strong>给Client: 1) 对于Server的输入比特$$y_i$$，直接发送对应的混淆值$$ \tilde {y}_i^{y_i}$$ 2) 对于Client的输入比特$$x_i$$，两方使用不经意传输协议OT: $$\big( x_i; (\tilde {x}_i^0, \tilde {x}_i^1) \big) \to (\tilde {x}_i^{x_i}; \perp)$$</li>
+<li>Client对$$ \tilde {C}$$求值，并获得混淆输出$$ \tilde {z} =  \tilde {C}(\tilde {x}, \tilde {y})$$</li>
+<li>混淆输出$$ \tilde {z}=(\tilde {z}_1, \tilde {z}_2)$$被转换为明文，Client获得$$z_2$$，Server获得$$z_1$$: 1) Client将混淆值$$\tilde {z}_2$$发送给Server，Server确定对应的明文$$z_2$$ 2) Server将一个输出解密表 (比如，每个混淆值$$\tilde {z}_1^0, \tilde {z}_1^1$$的哈希值)发送给Client，Client再将$$\tilde z_1$$转换为$$z_1$$</li>
+</ul>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1591964355/blog/1591964282982_oijkap.jpg" alt=""></p>
+<h3 id="混淆电路协议的安全性">混淆电路协议的安全性</h3>
+<p>Yao的混合电路协议：</p>
+<ul>
+<li>对于<strong>被动攻击者</strong>是可证明安全的<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted --></li>
+<li>对于<strong>恶意</strong>的client，使用对恶意攻击者安全的OT协议(maliciously secure OT)也是安全的</li>
+<li>它可以扩展为对于<strong>隐蔽</strong>(covert)<!-- raw HTML omitted --><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup><!-- raw HTML omitted -->和<strong>恶意</strong>(malicious)<!-- raw HTML omitted --><sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup><!-- raw HTML omitted -->的攻击者安全的协议：这些协议使用&quot;cut-and-choose&quot;技术，保证$$P_2$$生成的是有效的混淆电路；还可以确保$$P_2$$向OT协议输入一致的值来避免选择错误攻击<!-- raw HTML omitted --><sup id="fnref:8"><a href="#fn:8" class="footnote-ref" role="doc-noteref">8</a></sup><!-- raw HTML omitted -->（$$P_2$$输入一个错误的密钥，如果$$P_1$$放弃，它就能学到 1 bit信息）</li>
+</ul>
+<p>&ldquo;cut-and-choose&quot;技术：</p>
+<ul>
+<li>$$P_2$$生成许多的混淆电路GC，并对它们作出承诺</li>
+<li>$$P_1$$随机选择除了一个以外所有的GC (对于隐蔽的情况)，或一半的GC (对于恶意的情况) 让$$P_2$$打开，让$$P_1$$能够证明它们的正确性</li>
+<li>这保证了多数没有打开的GC，有很大概率是良好的</li>
+</ul>
+<p>到此为止，Yao的混淆电路协议已经介绍完了。最后介绍Bellare等人给出的混淆电路形式化定义。</p>
+<h1 id="混淆电路的形式化定义">混淆电路的形式化定义</h1>
+<p>混淆电路对于安全多方计算的意义重大，而Yao的混淆电路一直被看作一种构造方法。直到2012年，混淆电路才作为一个独立的密码方案出现，Bellare等人给出了混淆电路的形式化定义，随之给出其语义定义、安全定义等。</p>
+<p>这一小节主要介绍Bellare等人的工作。</p>
+<p>一个混淆电路方案由五个子函数组成$$GC=(Gb, En, Ev, De, ev)$$，分别称为混淆方案(Garbled Scheme)、输入加密(input Encoding)、混淆求值(Gb Evaluation)、解密(Decoding)和明文求值(plain evaluation)<!-- raw HTML omitted --><sup id="fnref:9"><a href="#fn:9" class="footnote-ref" role="doc-noteref">9</a></sup><!-- raw HTML omitted -->。</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1591970910/blog/1591970897888_azi3x7.jpg" alt=""></p>
+<p>每个算法的功能如下：</p>
+<ul>
+<li>$$Gb(1^{\kappa},f) \to (F,e,d)$$: 该算法用于对$$C$$进行加密。输入函数$$f$$和安全参数$$\kappa$$，输出加密后的函数$$F$$，一个加密密钥$$e$$和一个解密密钥$$d$$</li>
+<li>$$En(e,x) \to X$$: 该算法用于加密输入$$x$$，这里$$x$$是函数$$f$$的输入。输入$$x$$和加密密钥$$e$$，加密后得到用于输入$$Ev$$的密文$$X$$</li>
+<li>$$Ev(F,X) \to Y$$: 该算法用于在密文状态下求函数$$f$$的值。输入加密后的函数$$F$$以及加密后的输入$$X$$，得到加密后的输出$$Y$$</li>
+<li>$$De(d,Y) \to y$$: 该算法用于将加密后的输出$$Y$$解密为明文输出$$y$$</li>
+<li>$$ev(f,x) \to y$$: 这是原始函数在未加密状态下的计算过程，用于判断混淆方案的正确性</li>
+</ul>
+<p>对混淆电路方案的形式化定义，让理论研究和实践都变得更加方便。</p>
+<p>下一节介绍自Yao之后，学者们对混淆电路构造的优化。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>A. C. Yao. How to Generate and Exchange Secrets. In FOCS'86. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>O. Goldreich, S. Micali and A. Wigderson. How to Play any Mental Game. In STOC'87. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>Y. Lindell, B. Pinkas. A Proof of Security of Yao’s Protocol for Two-Party Computation. In JoC'09. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>M. Bellare, V. T. Hoang, P. Rogaway. Foundations of Garbled Circuits. In CCS'12. <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>S. Goldwasser, Y Kalai, R. A. Popa. Reusable garbled circuits and succinct functional encryption. In ACM'13 <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6" role="doc-endnote">
+<p>Y. Aumann, Y. Lindell. Security Against Covert Adversaries: Efficient Protocols for Realistic Adversaries. In TCC'07. <a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:7" role="doc-endnote">
+<p>Y. Lindell, B. Pinkas. An Efficient Protocol for Secure Two-Party Computation in the Presence of Malicious Adversaries. In EUROCRYPT'07. <a href="#fnref:7" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:8" role="doc-endnote">
+<p>M. S. Kiraz, B. Schoenmakers. A Protocol Issue for the Malicious Case of Yao’s Garbled Circuit Construction. In Symposium on Information Theory in the Benelux, 2006. <a href="#fnref:8" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:9" role="doc-endnote">
+<p>张正, 张方国. 混淆电路与不可区分. 密码学报. 2019. <a href="#fnref:9" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

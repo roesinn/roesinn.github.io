@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Hexo &#43; NexT 优化配置记录 | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Hexo &#43; NexT 优化配置记录" />
+<meta property="og:description" content="本文收录我在Hexo建站初期对NexT主题进行的配置、陆陆续续用到的插件以及调试时遇到的问题。其中包含部分我的custom.styl 代码以供参考。目前已改用Hugo。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/hexo-next-conf/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-02-20T12:35:11-05:00" />
+<meta property="article:modified_time" content="2020-02-20T12:35:11-05:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hexo &#43; NexT 优化配置记录"/>
+<meta name="twitter:description" content="本文收录我在Hexo建站初期对NexT主题进行的配置、陆陆续续用到的插件以及调试时遇到的问题。其中包含部分我的custom.styl 代码以供参考。目前已改用Hugo。"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <p>本文收录我在Hexo建站初期对NexT主题进行的配置、陆陆续续用到的插件以及调试时遇到的问题。其中包含部分我的<code>custom.styl</code> 代码以供参考。目前已改用Hugo。</p>
+<h1 id="版本及配置文件">版本及配置文件</h1>
+<h2 id="hexo--next-调试版本">Hexo + NexT 调试版本</h2>
+<pre><code>/* Hexo 版本 */
+hexo: 4.2.0
+hexo-cli: 3.1.0
+os: Darwin 18.7.0 darwin x64
+node: 12.16.1
+	
+/* NexT 版本 */
+version: 7.7.1
+	
+/* NexT 设计版式 */
+scheme: Pisces
+	
+/* 调试浏览器 */
+Google Chrome Version 79.0.3945.130 (Official Build) (64-bit)
+</code></pre><h2 id="重要的配置文件">重要的配置文件</h2>
+<ul>
+<li><code>./_config.yml</code> 站点配置文件</li>
+<li><code>./themes/next/_config.yml</code> 主题配置文件</li>
+<li><code>./themes/next/source/css/_custom/custom.styl </code>用户自定义css，可覆盖其余所有css样式</li>
+<li><code>./themes/next/source/css/_variables/base.styl</code> 字体、颜色等基本变量的赋值</li>
+<li><code>./themes/next/layout/_layout.swig</code> 主题的全局html，可添加head，body以及script脚本</li>
+</ul>
+<h2 id="一个重要的配置思路">一个重要的配置思路</h2>
+<p>如果想要对某处进行自定义，首先在站点和主题配置文件中寻找相应变量，通过在博客根目录进行关键字搜索寻找文件位置，涉及插件一般可在<code>_layout.swig</code>中进行修改，涉及静态样式可在相应<code>.styl</code>文件直接修改，但最好在<code>custom.styl</code>中进行覆盖。</p>
+<h1 id="next-主题定制">NexT 主题定制</h1>
+<h2 id="文章内容设置">文章内容设置</h2>
+<h3 id="代码块高亮">代码块高亮</h3>
+<p>Hexo内置的<code>highlight.js</code>使用了<code>Tomorrow</code>风格，自带代码块颜色高亮，其模式可在主题配置文件中设置：</p>
+<pre><code># 文件位置：./themes/next/_config.yml
+
+# Code Highlight theme
+# Available value:
+#    normal | night | night eighties | night blue | night bright
+# https://github.com/chriskempson/tomorrow-theme
+
+highlight_theme: normal
+</code></pre><p>如果对内置高亮模式不满意，有以下两种解决方法：</p>
+<ol>
+<li>引入外置highlight.js</li>
+</ol>
+<p><a href="https://highlightjs.org/static/demo/">Highlight官网</a>支持185种语言的高亮和91种风格。可以在<code>_layout.swig</code>的头部引入外置cdn，也可以下载<code>highlight.js</code>至<code>\.node_modules</code>路径。但还需要自己配置代码行数，可以参考<a href="http://cps.ninja/2019/03/25/add-highlightjs-to-hexo-blog/">这里</a>。</p>
+<ol start="2">
+<li>直接修改内置highlight的样式</li>
+</ol>
+<p>通过修改<code>./themes/next/source/css/_common/components/highlight</code>路径下的<code>theme.styl</code>，<code>diff.styl</code>和<code>highlight.styl</code>来调整hexo内置的五种高亮模式，比如<strong>代码的字体、颜色和大小</strong>，<strong>代码块的大小</strong>。</p>
+<p>比如Diff语言如果只变色背景，想要取消背景变色使文字变色</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/c_scale,w_460/v1582570526/hexo/34_alvtuq.png" alt=""></p>
+<p>可以在<code>highlight.styl</code>中将<code>background</code>替换为<code>color</code>，并在<code>diff.styl</code>文件中把想要颜色的值赋给变量<code>highlight-deletion</code>与<code>highlight-addition</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">/* highlight.styl */
+// For diff highlight
+<span style="color:#f92672">- pre .deletion { background: $highlight-deletion; }
+</span><span style="color:#f92672">- pre .addition { background: $highlight-addition; }
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ pre .deletion { color: $highlight-deletion; }
+</span><span style="color:#a6e22e">+ pre .deletion { color: $highlight-addition; }
+</span><span style="color:#a6e22e"></span>pre .meta     { color: $highlight-purple; }
+
+/* diff.styl */
+if $highlight_theme == &#34;normal&#34;
+  $highlight-deletion     = #ae0013
+  $highlight-addition     = #12ad14
+</code></pre></div><p>效果</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/c_scale,w_254/v1582570591/hexo/1582570556284_f9l8kp.jpg" alt=""></p>
+<h3 id="文章置顶">文章置顶</h3>
+<p>首先移除默认安装的插件：</p>
+<pre><code>$ npm uninstall hexo-generator-index --save
+</code></pre><p>然后安装新插件：</p>
+<pre><code>$ npm install hexo-generator-index-pin-top --save
+</code></pre><p>最后编辑有这需求的相关文章时，在 <code>Front-matter（</code>文件最上方以 <code>---</code>分隔的区域）加上一行：</p>
+<pre><code>top: true
+</code></pre><p>如果需要置顶多篇，设置 top 的值来控制顺序（大的在前面），比如：</p>
+<pre><code># Post a.md
+title: a
+top: 1
+
+# Post b.md
+title: b
+top: 10
+</code></pre><p>设置NexT置顶样式，编辑文件：</p>
+<pre><code>// 文件位置：./node_modules/hexo-generator-index-pin-top/lib/generator.js
+
+'use strict';
+var pagination = require('hexo-pagination');
+module.exports = function(locals){
+  var config = this.config;
+  var posts = locals.posts;
+    posts.data = posts.data.sort(function(a, b) {
+        if(a.sticky &amp;&amp; b.sticky) { // 两篇文章sticky都有定义
+            if(a.sticky == b.sticky) return b.date - a.date; // 若sticky值一样则按照文章日期降序排
+            else return b.sticky - a.sticky; // 否则按照sticky值降序排
+        }
+        else if(a.sticky &amp;&amp; !b.sticky) { // 以下是只有一篇文章sticky有定义，那么将有sticky的排在前面（这里用异或操作居然不行233）
+            return -1;
+        }
+        else if(!a.sticky &amp;&amp; b.sticky) {
+            return 1;
+        }
+        else return b.date - a.date; // 都没定义按照文章日期降序排
+    });
+  var paginationDir = config.pagination_dir || 'page';
+  return pagination('', posts, {
+    perPage: config.index_generator.per_page,
+    layout: ['index', 'archive'],
+    format: paginationDir + '/%d/',
+    data: {
+      __index: true
+    }
+  });
+};
+</code></pre><p>也就是将插件的<code>top</code>全部替换为 NexT 原有的<code> sticky</code>，然后将 <code>Front-matter</code> 中的 <code>top</code> 替换为 <code>sticky</code>，就能调用 NexT 主题原有的置顶样式了。</p>
+<p>最后可以自定义一下样式：</p>
+<pre><code>/* 文件位置：./themes/next/source/css/_custom/custom.styl */
+
+/* 自定义的文章置顶样式 */
+.post-sticky-flag {
+    font-size: inherit;
+    float: left;
+    color: rgb(0, 0, 0);
+    cursor: help;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+}
+.post-sticky-flag:hover {
+    color: #07b39b;
+}
+</code></pre><h3 id="文章更新时间">文章更新时间</h3>
+<p>修改<code>./theme/next/layout/_marco/post.swig</code>文件，在<code>&lt;span class=&quot;post-time&quot;&gt;...&lt;span&gt;</code>标签后添加：</p>
+<pre><code>{%if post.updated and post.updated &gt; post.date%}
+  &lt;span class=&quot;post-updated&quot;&gt;
+   &amp;nbsp; | &amp;nbsp; {{ __('post.updated') }}
+   &lt;time itemprop=&quot;dateUpdated&quot; datetime=&quot;{{ moment(post.updated).format() }}&quot; content=&quot;{{ date(post.updated, config.date_format) }}&quot;&gt;
+      {{ date(post.updated, config.date_format) }}
+   &lt;/time&gt;
+  &lt;/span&gt;
+{% endif %}
+</code></pre><p>根据站点配置文件<code>_config.yml</code>中的<code>language</code>参数修改对应的语言配置文件 <code>./themes/next/languages/en.yml</code>：</p>
+<pre><code>post:
+  updated: Updated on  //或者是Edited on 若为中文则在zh_Hans.yml中修改为：更新于
+</code></pre><p>在站点配置文件中<code>_config.yml</code>增加一行：</p>
+<pre><code>display_updated: true
+</code></pre><p>写文章的时候可以直接在<code>front-matter</code>中设置更新时间，或在模版<code>post.md</code>中添加（无参数会显示md文件的修改日期）：</p>
+<pre><code>updated: 
+</code></pre><h2 id="自定义样式">自定义样式</h2>
+<p>自定义样式可参考两个文档：</p>
+<ul>
+<li><a href="https://theme-next.org/docs/">NexT Documents</a></li>
+<li><a href="https://hexo.io/docs/permalinks">Hexo Documents - Customization</a></li>
+</ul>
+<h3 id="动态背景">动态背景</h3>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1582383115/hexo/hexo-next-optimization-1_wvsd8m.gif" alt="⦾ 效果图"></p>
+<p>在主题配置文件<code>_config.yml</code>中，进行如下修改：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"># 文件位置：./_config.yml
+
+canvas_nest:
+<span style="color:#f92672">-  enable: false
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  enable: true
+</span><span style="color:#a6e22e"></span>  onmobile: true # display on mobile or not
+  color: &#39;99,71,63&#39; # RGB values, use &#39;,&#39; to separate
+  opacity: 0.3 # the opacity of line: 0~1
+  zIndex: -1 # z-index property of the background
+  count: 99 # the number of linestrue
+</code></pre></div><p>该模块文件位置：
+<code>./themes/next/source/lib/canvas-nest/canvas-nest.min.js</code></p>
+<p>参数修改参考 <a href="https://github.com/hustcc/canvas-nest.js/blob/master/README-zh.md">README</a>。</p>
+<h3 id="修改文章底部带的标签">修改文章底部带#的标签</h3>
+<p>修改模板<code>./themes/next/layout/_macro/post.swig</code>，搜索<code>rel=&quot;tag&quot;&gt;#</code>，将#换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
+<h3 id="页脚的心跳">页脚的心跳</h3>
+<p>首先编辑主题配置文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"># 文件位置：./themes/next/_config.yml
+
+footer:
+<span style="color:#f92672">-  icon: user
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  icon: heart
+</span></code></pre></div><p>然后编辑：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">&lt;!-- 文件位置：./themes/next/layout/_partials/footer.swig --&gt;
+
+<span style="color:#f92672">- &lt;span class=&#34;with-love&#34;&gt;
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ &lt;span class=&#34;with-love&#34; id=&#34;heart&#34;&gt;
+</span></code></pre></div><p>接着编辑<code>custon.styl</code>，加入：</p>
+<pre><code>/* 文件位置：./themes/next/source/css/_custom/custom.styl */
+
+/* 自定义页脚跳动的心样式 */
+@keyframes heartAnimate {
+    0%,100%{transform:scale(1);}
+    10%,30%{transform:scale(0.9);}
+    20%,40%,60%,80%{transform:scale(1.1);}
+    50%,70%{transform:scale(1.1);}
+}
+#heart {
+    animation: heartAnimate 1.33s ease-in-out infinite;
+}
+.with-love {
+    color: rgb(255, 113, 168);
+}
+</code></pre><h3 id="各种颜色与形状">各种颜色与形状</h3>
+<p>可通过搜索函数名在<code>theme</code>文件中查看其定义位置，但建议在<code>custom.styl</code>中进行修改。</p>
+<pre><code>/* 文件位置：./themes/next/source/css/_custom/custom.styl */
+
+// 背景颜色/图片
+body::before {
+    background: #eeeeee  //背景色，可使用hex值，rgb，rgba
+    background-image: url(https://背景图.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    content: &quot; &quot;;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -2;
+}
+</code></pre><pre><code>//文章的背景颜色与形状
+.content-wrap{
+    float: right;
+    box-sizing: border-box;
+    padding: 40px;
+    //width: calc(100% - 252px);
+    background: rgba(244,243,240,0.85);  // 统一背景颜色
+    min-height: 700px;
+    box-shadow: initial;
+    border-radius: 30px 30px 30px 30px;  //修改成圆角矩形
+
+    +tablet() {
+    width: 100%;
+    padding: 8px;
+    border-radius: 30px;  //修改成圆角矩形
+    }
+    +mobile() {
+    width: 100%;
+    padding: 8px;
+    min-height: auto;
+    border-radius: 30px;  //修改成圆角矩形
+    }
+}
+</code></pre><pre><code>// 标题栏背景颜色
+.site-meta {
+  background: $blue; //修改为自己喜欢的颜色
+}
+</code></pre><pre><code>//菜单
+// 菜单超链接字体大小
+.menu .menu-item a {
+    font-size: 13px;
+    //圆角矩形
+    border-radius: 10px;
+}
+// 菜单各项边距
+.menu .menu-item {
+    margin: 5px 15px;
+}
+// 选中菜单颜色以及圆角矩形
+.menu-item-active a, .menu .menu-item a:hover, .menu .menu-item span.exturl:hover {
+    background: #f2f2f2;
+    color: #4d4d4d;
+    border-radius: 10px;
+}
+.menu-item-active a:after, .menu .menu-item a:hover:after, .menu .menu-item span.exturl:hover:after {
+    background-color: #f2f2f2;
+}
+</code></pre><pre><code>//侧栏颜色与形状
+.sidebar{
+    background: rgba(244,243,240,0);  //统一背景颜色
+}
+.sidebar-inner {
+    box-sizing: border-box;
+    width: 240px;
+    color: #555;
+    background: rgba(244,243,240,0.85);
+    //box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
+    border-radius: 15px;
+    opacity: 0;
+}
+.sidebar-inner .affix-top{
+    border-radius: 15px;
+}
+</code></pre><pre><code>// 文章内链接文本样式
+.post-body p a{
+  color: #595959;
+  border-bottom: none;
+  border-bottom: 1px solid #595959;
+  &amp;:hover {
+    color: #000000;
+    border-bottom: none;
+    border-bottom: 1px solid #000000;
+  }
+}
+</code></pre><p>以上是我的<code>custom.styl</code>文件中的部分代码，仅供参考。</p>
+<h3 id="修改字体">修改字体</h3>
+<p>对字体进行自定义修改的步骤：</p>
+<ol>
+<li><code>_config.yml</code></li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"># 文件位置：./themes/next/_config.yml 
+
+font:
+<span style="color:#f92672">-  enable: false
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  enable: true
+</span><span style="color:#a6e22e"></span>
+# Global font settings used on &lt;body&gt; element.
+global:
+<span style="color:#f92672">-  external: false
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  external: true
+</span><span style="color:#a6e22e">+  family: Noto Sans TC
+</span><span style="color:#a6e22e"></span>
+global:
+  external: true
+  family: Noto Sans TC
+  size:
+
+headings:
+  external: true
+  family: Noto Sans TC
+  size:
+  
+posts:
+  external: true
+  family: Noto Sans TC
+
+logo:
+  external:
+  family:
+  size:
+
+codes:
+  external: true
+  family: Source Code Pro
+  size:
+</code></pre></div><ol start="2">
+<li><code>base.styl</code></li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"># 文件位置：./themes/next/source/css/_variables/base.styl
+
+// Font families.
+<span style="color:#f92672">-$font-family-chinese      = &#34;PingFang SC&#34;, &#34;Microsoft YaHei&#34;
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+$font-family-chinese      = &#34;Noto Serif SC&#34;
+</span><span style="color:#a6e22e"></span>
+</code></pre></div><ol start="3">
+<li><code>custom.styl</code></li>
+</ol>
+<pre><code>/* 文件位置：./themes/next/source/css/_custom/custom.styl */
+
+.post-body {
+    color: #333;
+}
+</code></pre><p>如何修改logo字体？</p>
+<p>首先在Google Fonts中复制所需字体的html代码，添加到<code>_layout.swig</code>的<code>&lt;head&gt; &lt;/head&gt;</code>间：</p>
+<pre><code>/* 文件位置：./themes/next/layout/_layout.swig */
+&lt;head&gt;
+  {% include '_partials/head.swig' %}
+  &lt;title&gt;{% block title %}{% endblock %}&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css?family=Long+Cang&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  {% include '_third-party/analytics/index.swig' %}
+&lt;/head&gt;
+
+</code></pre><p>然后在自定义的css文件<code>custom.styl</code>中添加：</p>
+<pre><code>/* 文件位置：./themes/next/source/css/_custom/custom.styl */
+
+//logo字体
+.site-title {
+    font-size: 40px !important;
+	font-family: 'Long Cang' !important;
+}
+</code></pre><p>其他与字体相关的博文：</p>
+<h3 id="更改标签云tagcloud颜色">更改标签云（tagcloud）颜色</h3>
+<p>默认标签云颜色为灰色黑色渐变，可以在这里修改：</p>
+<pre><code>{# 文件位置：./themes/next/layout/page.swig #}
+
+{{ tagcloud({min_font: 13, max_font: 31, amount: 1000, color: true, start_color: '#9733EE', end_color: '#FF512F'}) }}
+</code></pre><p>渐变效果参考<a href="https://uigradients.com/">这里</a>，参数说明见<a href="https://hexo.io/zh-cn/docs/helpers.html#tagcloud">Hexo官方文档</a>。</p>
+<h2 id="hexo有用插件">Hexo有用插件</h2>
+<p><a href="https://hexo.io/plugins/">此处</a>为Hexo插件的官方收录。</p>
+<p>以下为几个非常实用的Hexo插件：</p>
+<h3 id="hexo-abbrlink">hexo-abbrlink</h3>
+<p><a href="https://github.com/Rozbo/hexo-abbrlink">hexo-abbrlink</a> 插件可以为文章自动生成固定的链接地址(Permalink)。具体方案是对标题+时间进行md5然后再转base64，保存在<code>front-matter</code>中。</p>
+<h4 id="安装">安装</h4>
+<pre><code>npm install hexo-abbrlink --save
+</code></pre><h4 id="使用">使用</h4>
+<p>打开站点配置文件<code>config.yml</code>，修改<code>permalink</code>并添加<code>abbrlink:</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Diff" data-lang="Diff">/* 文件位置：./themes/next/source/css/_custom/custom.styl */
+
+# permalink_defaults:
+<span style="color:#a6e22e">+ permalink: posts/:abbrlink/
+</span><span style="color:#a6e22e"></span># abbrlink config
+<span style="color:#a6e22e">+ abbrlink:
+</span><span style="color:#a6e22e">+   alg: crc32 # 算法 支持crc16(default)和crc32
+</span><span style="color:#a6e22e">+   rep: hex   # 数制 支持dec(default)和hex
+</span></code></pre></div><p>在以前发表的文章的<code>front-matter</code>中添加：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Diff" data-lang="Diff">title: Hexo + NexT 优化配置记录
+date: 2020-02-20 12:55:03
+tags: hexo
+categories: 前端
+<span style="color:#a6e22e">+ abbrlink: 
+</span></code></pre></div><p><a href="http://blog.jvaeyhcd.wang/posts/05c9df7e0c47bd64.html">其他方法</a></p>
+<h3 id="hexo-less">hexo-less</h3>
+<p><a href="https://github.com/fuchen/hexo-less">hexo-less</a> 插件可以手动设置文章摘要，但不影响章内容。</p>
+<h4 id="安装-1">安装</h4>
+<pre><code>npm install --save hexo-less
+</code></pre><h4 id="使用-1">使用</h4>
+<p>在摘要之后使用<code>&lt;!--less--&gt;</code>，用法和<code>&lt;!--more--&gt;</code>一样。需要注意的是<!-- raw HTML omitted -->前的内容不会出现在文章中。</p>
+<pre><code>---
+本文收录我在Hexo建站初期对NexT主题进行的配置、陆陆续续用到的插件以及调试时遇到的问题。其中包含部分我的`custom.styl` 代码。
+&lt;!--less--&gt;
+正文。
+</code></pre><p>摘要效果：
+<img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1582457089/hexo/1582457044631_wq6rum.jpg" alt="">
+文章效果：
+<img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1582457090/hexo/1582457050771_poqezj.jpg" alt=""></p>
+<h3 id="hexo-auto-category">hexo-auto-category</h3>
+<p><a href="https://github.com/xu-song/hexo-auto-category">hexo-auto-category</a> 插件可以根据日志文件(Markdown)所在文件目录自动分类。即手动在<code>./source/_post/</code>下建立目录，移动目标日志文件，<code>categories</code>会自动生成。</p>
+<p>对于文章<code>./source/_post/web/framework/hexo.md</code>，该插件会在编译部署后自动生成以下<code>categories</code>：</p>
+<pre><code>categories:
+   - web
+   - framework
+</code></pre><h4 id="安装-2">安装</h4>
+<pre><code>npm install hexo-auto-category --save
+</code></pre><h4 id="配置">配置</h4>
+<p>在站点配置文件<code>_config.yml</code>中添加：</p>
+<pre><code># Generate categories from directory-tree
+# Dependencies: https://github.com/xu-song/hexo-auto-category
+auto_category:
+ enable: true
+ depth:    // depth &gt; 0，生成几级目录分类
+</code></pre><h3 id="hexo-filter-github-emojis">hexo-filter-github-emojis</h3>
+<p><a href="https://github.com/crimx/hexo-filter-github-emojis">hexo-filter-github-emojis</a>插件用于在博文中插入<a href="https://www.webfx.com/tools/emoji-cheat-sheet/">github的表情</a>。</p>
+<h4 id="安装-3">安装</h4>
+<pre><code>npm install hexo-filter-github-emojis --save
+</code></pre><h4 id="配置-1">配置</h4>
+<p>在站点配置文件<code>_config.yml</code>中添加：</p>
+<pre><code>  githubEmojis:
+  enable: true
+  className: github-emoji
+  inject: true
+  styles:    //可自由设置
+     font-size: 2em
+     font-weight: bold
+  customEmojis:
+</code></pre><p>在<code>layout.swig</code>的最外层<!-- raw HTML omitted --> <!-- raw HTML omitted -->中添加：</p>
+<pre><code>&lt;span class=&quot;github-emoji&quot; style=&quot;background-image:url(https://assets-cdn.github.com/images/icons/emoji/unicode/2728.png?v8)&quot; data-src=&quot;https://assets-cdn.github.com/images/icons/emoji/unicode/2728.png?v8&quot;&gt;&amp;#x2728;&lt;/span&gt;
+</code></pre><p>并在<!-- raw HTML omitted --> <!-- raw HTML omitted --> 内添加：</p>
+<pre><code>  &lt;script&gt;
+    document.querySelectorAll('.github-emojis')
+      .forEach(el =&gt; {
+        if (!el.dataset.src) { return; }
+        const img = document.createElement('img');
+        img.style = 'display:none !important;';
+        img.src = el.dataset.src;
+        img.addEventListener('error', () =&gt; {
+          img.remove();
+          el.style.color = 'inherit';
+          el.style.backgroundImage = 'none';
+          el.style.background = 'none';
+        });
+        img.addEventListener('load', () =&gt; {
+          img.remove();
+        });
+        document.body.appendChild(img);
+      });
+  &lt;/script&gt;
+</code></pre><h4 id="语法">语法</h4>
+<pre><code>{% github_emoji blush %}
+{% github_emoji smile %}
+{% github_emoji sleeping %}
+{% github_emoji heartbeat %}
+</code></pre><p>效果： {% github_emoji blush %} {% github_emoji smile %} {% github_emoji sleeping %} {% github_emoji heartbeat %}</p>
+<h3 id="hexo-tag-owl">hexo-tag-owl</h3>
+<p><a href="https://github.com/m80126colin/hexo-tag-owl">hexo-tag-owl</a> 插件用于插入图片和视频，图片支持本地图片和Gif，视频支持Youtube， Bilibili， TED等。此处为<a href="http://m80126colin.github.io/hexo-tag-owl-demo/">Demo</a>。</p>
+<h4 id="安装-4">安装</h4>
+<pre><code>npm install hexo-tag-owl --save
+</code></pre><h4 id="配置-2">配置</h4>
+<p>在<code>./node_modules/hexo-tag-owl/lib/asset/css.styl</code>中添加如下代码，可对插入媒体的css样式进行设置：</p>
+<pre><code>/* 文件位置: ./node_modules/hexo-tag-owl/lib/asset/css.styl */
+
+owl:
+  css: default  //default为插入默认样式；custom为使用自定义样式，文件为file的值；none为取消该样式
+  file: owl.css
+</code></pre><h4 id="用法">用法</h4>
+<p>参数设置参考<a href="https://github.com/m80126colin/hexo-tag-owl">这里</a>。</p>
+<pre><code>&lt;!-- 插入本地图片和Gif --&gt;
+{% owl local image_path %}
+{% owl giphy giphy_id %}
+</code></pre><pre><code>&lt;!-- 插入视频 --&gt;
+{% owl youtube youtube_id %}
+{% owl niconico niconico_id [type] %}  
+{% owl bilibili bilibili_id [page] %}
+{% owl vimeo vimeo_id %}
+{% owl youku youku_id %}
+{% owl tencent tencent_id %}
+{% owl ted ted_id [lang] %}
+</code></pre><h3 id="hexo-tag-aplayer">hexo-tag-aplayer</h3>
+<p><a href="https://github.com/MoePlayer/hexo-tag-aplayer">hexo-tag-aplayer</a> 插件用于插入音频。3.0版本引入MetingJS，支持QQ音乐、网易云音乐、虾米、酷狗等平台的音乐播放。</p>
+<h4 id="安装-5">安装</h4>
+<pre><code>npm install hexo-tag-aplayer --save
+</code></pre><h4 id="使用-2">使用</h4>
+<p>在站点配置文件<code>_config.yml</code>中设置：</p>
+<pre><code>aplayer:
+  meting: true
+</code></pre><p>在文章中添加：</p>
+<pre><code>&lt;!-- 不使用Meting --&gt;
+{% aplayer title author url [picture_url, narrow, autoplay, width:xxx, lrc:xxx] %}
+
+&lt;!-- 使用Meting的简单示例 (id, server, type)  --&gt;
+{% meting &quot;60198&quot; &quot;netease&quot; &quot;playlist&quot; %}
+
+&lt;!-- 使用Meting的进阶示例 --&gt;
+{% meting &quot;60198&quot; &quot;netease&quot; &quot;playlist&quot; &quot;autoplay&quot; &quot;mutex:false&quot; &quot;listmaxheight:340px&quot; &quot;preload:none&quot; &quot;theme:#ad7a86&quot;%}
+</code></pre><p>普通播放器参数设置如下：</p>
+<ul>
+<li><code>title</code>: 曲目标题</li>
+<li><code>author</code>: 曲目作者</li>
+<li><code>url</code>: 音乐url地址</li>
+<li><code>picture_url</code>: (可选) 音乐对应的图片地址</li>
+<li><code>narrow</code>: （可选）播放器袖珍风格</li>
+<li><code>autoplay</code>: (可选) 自动播放，移动端浏览器暂时不支持此功能</li>
+<li><code>width:xxx</code>: (可选) 播放器宽度 (默认: 100%)</li>
+<li><code>lrc:xxx</code>: （可选）歌词文件 URL 地址</li>
+</ul>
+<p>引入MetingJS的参数设置请参考<a href="https://github.com/MoePlayer/hexo-tag-aplayer/blob/master/docs/README-zh_cn.md">这里</a>。</p>
+<p>当<code>config.yml</code>中<code>post asset folder</code>为<code>true</code>时，可以将图片、音乐、歌词文件放入与文章对应的文件夹中，直接引用：</p>
+<pre><code>{% aplayer &quot;Caffeine&quot; &quot;Jeff Williams&quot; &quot;caffeine.mp3&quot; &quot;picture.jpg&quot; &quot;lrc:caffeine.txt&quot; %}
+</code></pre><p>除了使用标签<code>lrc</code>选项来设定歌词，可以直接使用<code>aplayerlrc</code>标签在博客中直接插入歌词：</p>
+<pre><code>{% aplayerlrc &quot;title&quot; &quot;author&quot; &quot;url&quot; &quot;autoplay&quot; %}
+[00:00.00]lrc here
+{% endaplayerlrc %}
+</code></pre><p>播放列表</p>
+<pre><code>{% aplayerlist %}
+{
+    &quot;narrow&quot;: false,                          //播放器袖珍风格
+    &quot;autoplay&quot;: true,                         //自动播放
+    &quot;mode&quot;: &quot;random&quot;,                         //曲目循环类型，有 'random', 'single', 'circulation', 'order'， 默认'circulation' 
+    &quot;showlrc&quot;: 3,                             //歌词显示配置项，可选项有：1,2,3
+    &quot;mutex&quot;: true,                            //该选项开启时，如果同页面有其他 aplayer 播放，该播放器会暂停
+    &quot;theme&quot;: &quot;#e6d0b2&quot;,	                      //播放器颜色设置
+    &quot;preload&quot;: &quot;metadata&quot;,                    //音乐预载入模式，可选项： 'none' 'metadata' 'auto', 默认: 'auto'
+    &quot;listmaxheight&quot;: &quot;513px&quot;,                 //该播放列表的最大长度
+    &quot;music&quot;: [
+        {
+            &quot;title&quot;: &quot;CoCo&quot;,
+            &quot;author&quot;: &quot;Jeff Williams&quot;,
+            &quot;url&quot;: &quot;caffeine.mp3&quot;,
+            &quot;pic&quot;: &quot;caffeine.jpeg&quot;,
+            &quot;lrc&quot;: &quot;caffeine.txt&quot;
+        },
+        {
+            &quot;title&quot;: &quot;アイロニ&quot;,
+            &quot;author&quot;: &quot;鹿乃&quot;,
+            &quot;url&quot;: &quot;irony.mp3&quot;,
+            &quot;pic&quot;: &quot;irony.jpg&quot;
+        }
+    ]
+}
+{% endaplayerlist %}
+</code></pre><h2 id="hexo上使用公式与流程图">Hexo上使用公式与流程图</h2>
+<h3 id="在hexo使用mathjax">在hexo使用mathjax</h3>
+<p>Mathjax是一个支持显示LaTex, MathML和AsciiMath符号的JavaScript引擎。<a href="https://github.com/hexojs/hexo-math">hexo-math</a>是一个可以自动部署<code>MathJax</code>的hexo插件。MathJax语法参考<a href="">这里</a>。</p>
+<p>安装hexo-math插件：</p>
+<pre><code>npm install hexo-math --save
+</code></pre><p>接下来在站点配置文件<code>_config.yml</code>加上如下配置：</p>
+<pre><code>/* 文件位置：./_config.yml */
+
+math:
+  engine: 'mathjax' # or 'katex'
+  mathjax:
+    src: custom_mathjax_source
+    config:
+      # MathJax config
+  katex:
+    css: custom_css_source
+    js: custom_js_source # not used
+    config:
+      # KaTeX config
+</code></pre><p>在主题配置文件<code>_config.yml</code>开启<code>mathjax</code>：</p>
+<pre><code># Enable Mathjax
+mathjax: true
+</code></pre><p>一些需要注意的问题（Marked.js与MathJax兼容的问题，具体参考<a href="https://www.sail.name/2018/05/31/use-mathjax-in-hexo/">这里</a>）：</p>
+<ul>
+<li>公式居中使用<code>$$</code> ，不要使用<code>$</code>。</li>
+<li>换行使用 <code>\\\</code> ，不要使用<code>\\</code>。</li>
+</ul>
+<h3 id="在hexo使用mermaid">在hexo使用Mermaid</h3>
+<p><a href="https://mermaid-js.github.io/mermaid/#/n00b-overview">Mermaid</a>是一种将使用代码可视化流程图的工具。Hexo使用<a href="https://github.com/webappdevelp/hexo-filter-mermaid-diagrams">hexo-filter-mermaid-diagrams</a>插件加入该种方法。</p>
+<p>安装插件：</p>
+<pre><code>npm install hexo-filter-mermaid-diagrams --save
+</code></pre><p>接下来在站点配置文件<code>_config.yml</code>加上如下配置：</p>
+<pre><code>/* 文件位置：./_config.yml */
+
+# mermaid chart
+mermaid: ## mermaid url https://github.com/knsv/mermaid
+  enable: true  # default true
+  version: &quot;7.1.2&quot; # default v7.1.2
+  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js
+    #startOnload: true  // default true
+</code></pre><p>在js文件中添加代码：</p>
+<pre><code>/* 文件位置：./themes/next/layout/_partials/footer.swig */
+
+{% if theme.mermaid.enable %}
+  &lt;script src='https://unpkg.com/mermaid@{{ theme.mermaid.version }}/dist/mermaid.min.js'&gt;&lt;/script&gt;
+  &lt;script&gt;
+    if (window.mermaid) {
+      mermaid.initialize({{ JSON.stringify(theme.mermaid.options) }});
+    }
+  &lt;/script&gt;
+{% endif %}
+</code></pre><p>更换流程图背景颜色：</p>
+<pre><code>/* 文件位置：./themes\next\source\css\_custom\custom.styl */
+
+.mermaid {
+ background: transparent;
+}
+</code></pre><p>效果（<em>flow前后的三个点之间加了空格(环境限制无法嵌套引用flow)，实际使用时需要去掉空格</em>）</p>
+<pre><code>` ` `mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice-&gt;&gt;John: Hello John, how are you?
+    loop Healthcheck
+        John-&gt;&gt;John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts &lt;br/&gt;prevail...
+    John--&gt;&gt;Alice: Great!
+    John-&gt;&gt;Bob: How about you?
+    Bob--&gt;&gt;John: Jolly good!  
+` ` ` 
+</code></pre><pre><code class="language-mermaid" data-lang="mermaid">sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice-&gt;&gt;John: Hello John, how are you?
+    loop Healthcheck
+        John-&gt;&gt;John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts &lt;br/&gt;prevail...
+    John--&gt;&gt;Alice: Great!
+    John-&gt;&gt;Bob: How about you?
+    Bob--&gt;&gt;John: Jolly good!
+</code></pre><p>关于mermaid的优化配置可以参考<a href="https://buhuida.com/2019/08/08/hexo-%E6%94%AF%E6%8C%81%E6%B5%81%E7%A8%8B%E5%9B%BE-mermaid/">这里</a>，流程图的缩放和大文件按需加载。</p>
+<h3 id="在hexo使用flowchart">在hexo使用flowchart</h3>
+<p>Flowchart是一种流程表。Hexo使用<a href="https://github.com/bubkoo/hexo-filter-flowchart">hexo-filter-flowchart</a>插件来实现流程表的插入。</p>
+<p>安装插件：</p>
+<pre><code>npm install --save hexo-filter-flowchart
+</code></pre><p>在站点配置文件<code>_config.yml</code>中添加：</p>
+<pre><code>flowchart:
+  # raphael:   # optional, the source url of raphael.js
+  # flowchart: # optional, the source url of flowchart.js
+  options: # options used for `drawSVG`
+</code></pre><p>效果（<em>flow前后的三个点之间加了空格(环境限制无法嵌套引用flow)，实际使用时需要去掉空格</em>）</p>
+<pre><code>` ` `flow
+st=&gt;start: Start
+op=&gt;operation: Your Operation
+cond=&gt;condition: Yes or No?
+e=&gt;end
+    
+st-&gt;op-&gt;cond
+cond(yes)-&gt;e
+cond(no)-&gt;op
+` ` `
+</code></pre><pre><code class="language-flow" data-lang="flow">st=&gt;start: Start
+op=&gt;operation: Your Operation
+cond=&gt;condition: Yes or No?
+e=&gt;end
+    
+st-&gt;op-&gt;cond
+cond(yes)-&gt;e
+cond(no)-&gt;op
+</code></pre><h1 id="遇到的问题汇总续更">遇到的问题汇总（续更）</h1>
+<h2 id="menu链接无法打开">menu链接无法打开</h2>
+<p>根据Hexo文档修改主题配置文件以打开achives，tags，categories等页面后，出现如下问题：</p>
+<pre><code>Cannot GET /archives/%20/
+</code></pre><p>这是因为菜单默认路径包含空格（<code>%20</code>），需要在主题配置文件<code>_config.yml</code>中将<code> /archives/</code>右边的空格去掉：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">/* 文件位置：./themes/next/_config.yml */
+
+menu:
+<span style="color:#f92672">-  home: / || home
+</span><span style="color:#f92672">-  archives: /archives/ || archive
+</span><span style="color:#f92672">-  categories: /categories/ || th
+</span><span style="color:#f92672">-  tags: /tags/ || tags
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  home: /|| home
+</span><span style="color:#a6e22e">+  archives: /archives/|| archive
+</span><span style="color:#a6e22e">+  categories: /categories/|| th
+</span><span style="color:#a6e22e">+  tags: /tags/|| tags
+</span></code></pre></div><h2 id="不蒜子统计结果无法显示">不蒜子统计结果无法显示</h2>
+<p>只需要将<code>busuanzi-counter.swig</code>修改成不蒜子的新域名就可以正常显示了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">/* 文件位置：./themes/next/layout/_third-party/analytics/busuanzi-counter.swig */
+
+<span style="color:#f92672">- &lt;script async src=&#34;//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&#34;&gt;&lt;/script&gt;
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ &lt;script async src=&#34;//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js&#34;&gt;&lt;/script&gt;
+</span></code></pre></div><p>参考文章：</p>
+<ul>
+<li><a href="https://io-oi.me/tech/hexo-next-optimization/">打造个性超赞博客 Hexo + NexT + GitHub Pages 的超深度优化</a></li>
+<li><a href="https://jacksonleon.gitee.io/posts/1540132352.html">Hexo-NexT博客样式自定义</a></li>
+<li><a href="https://www.jianshu.com/p/ae3a0666e998">hexo添加文章更新时间</a></li>
+<li><a href="https://www.sail.name/2018/05/31/use-mathjax-in-hexo/">在hexo使用mathjax</a></li>
+<li><a href="https://wangxiaoyu-go.github.io/2018/11/23/hexo-filter-mermaid-diagrams/">Hexo中插入mermaid diagrams</a></li>
+<li><a href="https://wangxiaoyu-go.github.io/2018/11/19/hexo-filter-flowchart/">Hexo中插入flowchart</a></li>
+</ul>
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

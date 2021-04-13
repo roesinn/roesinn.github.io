@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CryptoProtocol on ROESIN&#43;</title>
+    <link>https://roesinn.github.io/categories/cryptoprotocol/</link>
+    <description>Recent content in CryptoProtocol on ROESIN&#43;</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>ROESIN</copyright>
+    <lastBuildDate>Tue, 16 Jun 2020 10:24:28 +0200</lastBuildDate><atom:link href="https://roesinn.github.io/categories/cryptoprotocol/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>安全多方计算协议</title>
+      <link>https://roesinn.github.io/post/mpc/</link>
+      <pubDate>Tue, 16 Jun 2020 10:24:28 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/mpc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OT扩展及优化</title>
+      <link>https://roesinn.github.io/post/otextension/</link>
+      <pubDate>Sun, 14 Jun 2020 19:17:33 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/otextension/</guid>
+      <description>我们有许多基于公钥密码学的OT协议，但计算代价高昂。而OT又常常用于构建安全计算协议(STPC/SMPC)：通常每个输入比特、每个电路门都要使用OT。计算一个函数要用到上百万个OT，如果只使用基于公钥密码学的OT，计算效率则会极低。
+然而，理论研究表明，没有黑盒压缩能将OT协议简化为单向函数(one-way function)。因此，仅用对称密码学构建OT协议是不可能的。如果使用类似混合加密或OTP加密的方法，是否有可能减少线上的计算代价呢？
+答案是肯定的：
+ OT协议可以被预计算：线下运行昂贵的公钥OT，线上只执行OTP加密。 OT协议可以被扩展 (简称OT扩展)：线下运行昂贵的公钥OT，线上执行较廉价的对称密码操作。  OT预计算的计算代价最小，运行速度最快，但要求线上的消息长度和线下预计算的消息长度一致。而OT扩展则没有这种限制，它在线上可以将线下的消息拉长为任意需要的长度。
+OT扩展的通信双方在线下预先对$\kappa$-bit 短字符串运行基于公钥密码学的OT协议，这种OT称为base OT或real OT。再于线上阶段使用一种对称密码学技巧将base OT扩展为以下两种OT：
+ 可以对长字符串($l$bit)使用的OT1。比如Beaver的OT扩展。 许多能对短字符串($\kappa$bit)执行的OT2。比如著名的 Ishai 的OT扩展。  Beaver的OT扩展 Ishai的OT扩展3 Ishai的OT扩展协议可以将$\kappa$个$OT_2^1$扩展为$m$个有效的$OT_2^1$，可以将消息长度为$\kappa$bit的$OT_2^1$扩展为$l$bit的$OT_2^1$。它和混合加密类似：先使用公钥密码算法，再使用对称密码算法。
+ OT扩展的理想功能性如下：  Alice输入$m$个$l$bit 长的字符对$(x_{j,0}, x_{j,1})$ Bob输入$m$bit 字符串$\bf {r}$, 并在第$j$次OT获得字符串$x_{j,r_i}$   OT扩展协议分为4个阶段。其中 1 为预计算，2-4为线上执行。
+  Alice 和 Bob 颠倒角色执行$\kappa$次 base OT。这种 base OT 基于$\kappa$bit 随机短字符串$(m_{i,0},m_{i,1})$，称为种子。 如图，Bob随机选择$\kappa$个$\kappa$bit 长的字符串对$(m_{i,0},m_{i,1})$, 不经意传输给Alice；Alice输入$\kappa$ bit 随机字符串$\bf {s}$选择$\kappa$对中的$m_{i,s_i}$
+  Bob生成一个$m \times \kappa$bit 的随机矩阵$\bf {T}$。然后拉长base OT的种子作为对称密钥，并与他的选择$\bf {r}$进行OTP加密（打码）。 如图，Bob首先生成一个$$m \times \kappa$$bit 的随机矩阵$\bf {T}$。用伪随机生成器PRG（比如AES）将种子$(m_{i,0},m_{i,1})$拉长($\kappa \to m$bit)，并和$\bf {T}$的每一列异或，对于拉长后的种子$m_{i,1}$，还要再和Bob$$m$bit选择$\bf {r}$异或。这个过程相当于对随机矩阵$\bf {T}$“打码”。 Bob将打码后的矩阵$\bf {T}$发送给Alice。Alice用PRG将她选择的种子$m_{i,s_i}$拉长($\kappa \to m$bit)，解密打码的矩阵$\bf {T}$得到矩阵$\bf {Q}$。若Alice在第$j$对种子里选择了$m_{i,0}$, 则获得$\bf {T}$的第$i$列；若选择了$m_{i,1}$, 则获得$\bf {T}$的第$i$列异或Bob的选择$\bf {r}$。</description>
+    </item>
+    
+    <item>
+      <title>混淆电路(三)：GMW协议</title>
+      <link>https://roesinn.github.io/post/garbledcircuit3/</link>
+      <pubDate>Sun, 14 Jun 2020 19:15:41 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit3/</guid>
+      <description>&lt;p&gt;继Yao之后，Goldreich, Micali和Wigderson在1987年提出了另一种用加密布尔电路计算函数的方案，简称GMW协议&lt;!-- raw HTML omitted --&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;!-- raw HTML omitted --&gt;。GMW协议包括&lt;strong&gt;安全两方计算&lt;/strong&gt;及&lt;strong&gt;安全多方计算&lt;/strong&gt;协议。这篇文章介绍GMW安全两方计算协议及优化实现，并与Yao的协议进行比较。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>混淆电路(二)：混淆电路构造的优化</title>
+      <link>https://roesinn.github.io/post/garbledcircuit2/</link>
+      <pubDate>Fri, 12 Jun 2020 17:04:41 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit2/</guid>
+      <description>&lt;p&gt;自姚1986年提出混淆电路构造(GC Construction)以来，许多学者都对这种构造进行了优化。目前最高效的GC构造是&lt;strong&gt;HalfGates&lt;/strong&gt;方案，它的电路规模(size)、加密代价(Garbled cost)和&amp;quot;解密&amp;quot;代价(Evaluation cost)都非常小。这些构造都属于&lt;strong&gt;基于电路的安全两方计算&lt;/strong&gt;协议。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>混淆电路(一)：姚氏混淆电路协议</title>
+      <link>https://roesinn.github.io/post/garbledcircuit/</link>
+      <pubDate>Tue, 09 Jun 2020 20:08:06 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit/</guid>
+      <description>&lt;p&gt;随着云计算、协同计算等新型计算模型的出现，仅仅对消息加密已经不能满足人们的安全需求。在交给代理商进行计算之前，用户希望对&lt;strong&gt;输入&lt;/strong&gt;和&lt;strong&gt;函数本身&lt;/strong&gt;都进行加密，从而达到保护函数“内部信息”的目的，这就是&lt;strong&gt;安全计算&lt;/strong&gt;。混淆电路(Garbled Circuit)就是一种对函数或电路加密的方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>安全计算</title>
+      <link>https://roesinn.github.io/post/securecomp/</link>
+      <pubDate>Tue, 09 Jun 2020 16:50:31 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/securecomp/</guid>
+      <description>安全两方计算 混淆电路(一)
+1 安全多方计算 安全多方计算是一个密码学工具，允许互不信任的参与方根据自己的输入计算任意一个函数，计算过程不泄露除输出结果以外的任何信息。
+1.1 通用MPC框架/End-to-End MPC Frameworks  OT extension [YKNP03] Free XOR gates [KS08] Half-gats [ZRE15] AES-NI  </description>
+    </item>
+    
+    <item>
+      <title>密码协议中的安全参数</title>
+      <link>https://roesinn.github.io/post/securitypara/</link>
+      <pubDate>Mon, 01 Jun 2020 00:06:15 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/securitypara/</guid>
+      <description>&lt;p&gt;为了研究的方便，理论密码学家用安全参数(Security Parameter)来量化一个密码方案的安全性，从而进行密码协议的安全性分析。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

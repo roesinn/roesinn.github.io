@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> I2P，Tor和VPN哪个更安全? | ROESIN&#43;</title>
+  <meta name="description" content="I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. Apart from those, I also spent my time on Typography Design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="I2P，Tor和VPN哪个更安全?" />
+<meta property="og:description" content="翻译自原文。
+当我们讨论到安全和隐私时，有几个常见的缩写词在到处流传。你可能会看到隐私匿名浏览器Tor和VPN经常出现在在主流媒体文章，还有另一个值得考虑的选择：I2P。
+但哪一种适合你呢？让我们探讨一下什么是I2P、Tor和VPN，以及哪一个适合你。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://roesinn.github.io/post/i2pvpntor/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-03-01T12:35:11-05:00" />
+<meta property="article:modified_time" content="2020-03-01T12:35:11-05:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="I2P，Tor和VPN哪个更安全?"/>
+<meta name="twitter:description" content="翻译自原文。
+当我们讨论到安全和隐私时，有几个常见的缩写词在到处流传。你可能会看到隐私匿名浏览器Tor和VPN经常出现在在主流媒体文章，还有另一个值得考虑的选择：I2P。
+但哪一种适合你呢？让我们探讨一下什么是I2P、Tor和VPN，以及哪一个适合你。"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://roesinn.github.io/css/style-white.css">
+  
+   <link rel="stylesheet" href="https://roesinn.github.io/css/custom.css"> 
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://roesinn.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+    <header id="header">
+  <a href="https://roesinn.github.io/">
+  
+    <div id="logo" style="background-image: url(https://roesinn.github.io/images/logo.png)"></div>
+  
+  <div id="title">
+    <h1>ROESIN&#43;</h1>
+  </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/posts">Writings</a></li>
+      
+        <li><a href="/tags">Tags</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+
+
+    
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="content" itemprop="articleBody">
+  
+    <p>翻译自<a href="https://www.makeuseof.com/tag/i2p-vs-tor-vs-vpn-secure/">原文</a>。</p>
+<p>当我们讨论到安全和隐私时，有几个常见的缩写词在到处流传。你可能会看到隐私匿名浏览器Tor和VPN经常出现在在主流媒体文章，还有另一个值得考虑的选择：I2P。</p>
+<p>但哪一种适合你呢？让我们探讨一下什么是I2P、Tor和VPN，<strong>以及哪一个适合你</strong>。</p>
+<h1 id="tor">Tor</h1>
+<p>Tor的名字源于一个软件项目：洋葱路由器(The Onion Router)。Tor软件通过一个相互连接的全球中继节点系统引导网络流量。由于数据会流经很多层，因此被称为“洋葱路由”。</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1583089023/hexo/tor-browser_airywc.png" alt=""></p>
+<p>除了这些层，Tor还会加密所有的网络流量，包括下一个节点的IP地址。加密的数据流经多个随机选择的中继，只有一层包含了下一个节点的IP地址，这个IP会在传输时被解密。</p>
+<p>最终的中继节点解密整个包，将数据发送到它最终的目的地，而不会在任何节点处泄漏源IP地址。</p>
+<h2 id="如何使用tor">如何使用Tor？</h2>
+<p>使用Tor最简单的方法就是用Tor浏览器(Tor Browser)，像安装其他软件那样下载并安装它。第一次打开Tor Browser后，安装将会继续。当你正常浏览网页的时候它会比平时稍慢一些，因为它通过多个中继点发送数据，这恐怕需要时间。</p>
+<h2 id="为什么要使用tor">为什么要使用Tor？</h2>
+<p>Tor浏览器会加密所有数据的传输。因此有很多人使用它：比如犯罪分子、记者、黑客/骇客、执法（保护通信和解决犯罪问题）、政府机构等等。事实上Tor诞生于美国海军研究和国防高级研究计划局的项目。这里是一份关于如何<a href="https://www.makeuseof.com/tag/journey-into-the-hidden-web-a-guide-for-new-researchers/">将网络隐藏为一种研究工具</a>的指南。</p>
+<p>Tor浏览器也是通往暗网(the dark web)最直接的途径之一(不要与 deep web混淆)，每当你听到关于销售非法物品和商品在线市场的故事时，他们就会谈论在暗网上托管的网站。<strong>博主提醒：请勿接触暗网。</strong></p>
+<p>但是Tor不只是关于疯狂的秘密市场和秘密通信，你也可以使用它来浏览像Facebook正常普通的网页。例如：航空公司使用复杂的算法来关注其他航班感兴趣的东西，根据需求调整价格。继续访问同一个网站，使用相同的IP，航空公司知道你感兴趣——但价格通常会上涨。使用Tor浏览器查看相同的航班，您可以找到一些有趣的折扣。</p>
+<h2 id="tor会保护我的隐私吗">Tor会保护我的隐私吗？</h2>
+<p>是的，Tor设计了自下而上的保护隐私方法，如果你只使用 Tor 浏览器浏览互联网，那么你不会在任何地方留下痕迹。然而硬核隐私权倡导者认为Tor网络受到了影响，国家安全局(NSA)的 XKeyscore 程序记录了每个访问Tor网页并下载Tor浏览器的人。此外，他们把下载和安装Tor的人归类为“潜在极端分子”。</p>
+<p>所以对不起，是的，你现在就在名单中(他们认为使用 Linux 的人也是如此，所以我不会太担心)。</p>
+<p>Tor仅对Tor浏览器(或使用Tor软件的其他浏览器)发送和接收数据进行加密，它不会加密整个系统的网络活动。</p>
+<p>有关Tor的更多信息，请查看<a href="https://www.makeuseof.com/tag/priority-wretched-hive-scum-villainy-5-ways-stay-safe-bad-tor-exit-nodes/">远离有危害的Tor出口节点的方法</a>。</p>
+<h1 id="i2p">I2P</h1>
+<p>隐形互联网项目(The Invisible Internet Project)即I2P是大蒜路由协议。这是Tor使用的洋葱路由协议的变体。</p>
+<p>I2P是一个“匿名覆盖网络”。大蒜路由协议将多个消息加密在一起，使数据流量分析变得困难，同时增加网络流量速度。大蒜路由的名字来源于实际的大蒜，每个消息都是蒜瓣(garlic clove)，整个加密包代表蒜头(bulb)。每个加密消息都有自己特定的传递指令，每个端点都作为一个加密识别码(读一对公共密钥中的一个)。</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1583092684/hexo/i2p-router-configuration_igljdx.png" alt=""></p>
+<p>每个I2P客户端(路由)建立了一系列的入站和出站连接隧道——直接对等网络(P2P)网络。I2P与你使用的其他P2P网络之间的主要区别在于隧道长度的单独选择。隧道长度是匿名性、延迟和个人吞吐量的一个因素，组成了是单个对等威胁模型的一部分。</p>
+<p>结果是根据每个对等方的发送者和接收者威胁模型，可能是最小数量的对等方在中继消息。</p>
+<h2 id="如何使用i2p">如何使用I2P？</h2>
+<p>使用I2P的最简单方法是在<a href="https://geti2p.net/en/download">官方下载安装包</a>并安装。安装后打开I2P，它会通过浏览器打开一个在本地托管的页面，这也就是I2P路由器控制台，换句话说，是用于维护I2P 连接的虚拟路由器。您还会注意到I2P服务命令窗口——忽略它并让它在后台运行。</p>
+<p>I2P服务可能需要几分钟才能启动并运行，尤其是在首次启动时，配置您的带宽需要时间。</p>
+<p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1583094339/hexo/I2P-Service-Command-Window_iprnrn.png" alt=""></p>
+<p>I2P允许它的用户创建和托管隐藏网站(hidden website)，称为“eepsites”，如果要访问“eepsites”，则需要将浏览器设置为特定的I2P代理，你可以在<a href="https://geti2p.net/en/about/browser-config">此处</a>找到I2P代理配置详细信息。</p>
+<h2 id="为什么要使用i2p">为什么要使用I2P?</h2>
+<p>I2P和Tor在大多数情况下提供类似的浏览体验。根据你的I2P带宽配置，它可能比Tor浏览器略快，并且可以在现有浏览器舒适运行。I2P充满了隐藏的服务，其中许多比基于Tor的同类服务更快，如果你对有令人恼火的Tor感到沮丧，这是一个巨大的优势。</p>
+<p>I2P与您的常规互联网连接一起运行，加密您的浏览器流量。但是，I2P 并不是匿名浏览开放网络的最佳工具。出口代理的数量有限(你的流量重新加入“正规”互联网业务的地方)的意思是用这样的方式，匿名性会下降。</p>
+<h3 id="i2p保护我的隐私吗">I2P保护我的隐私吗？</h3>
+<p>简而言之，是的。它可以很好地保护您的隐私，除非您经常使用它浏览网页。即使这样，隔离Web流量也需要大量资源。I2P使用分布式P2P模型来确保数据收集、统计收集和网络概述难以完成。此外，大蒜路由协议将多个消息加密在一起，使得流量分析变得更加困难。</p>
+<p>我们前面讨论的I2P隧道是单向的：数据只单向流动。一个隧道进一个隧道出。仅此一项就为所有对等体提供了更大的匿名性。</p>
+<p>I2P仅加密一个配置过的浏览器发送和接收的数据。它不会加密整个系统的网络活动。</p>
+<h1 id="vpn">VPN</h1>
+<p>最后我们介绍VPN(虚拟专用网络)，VPN与Tor、I2P的工作方式不同，它不是只关注浏览器流量的加密，而是对所有传入和传出的网络流量进行加密。从这个意义上讲，它为普通用户提供了一个保护其数据的简单途径，但也有一些注意事项，我们将在稍后讨论。</p>
+<h2 id="vpn如何工作">VPN如何工作？</h2>
+<p>通常，当您发送请求(例如，单击浏览器中的链接或为启动Skype进行视频呼叫时，您的请求会ping到保存指定数据的服务器，然后返回给您。数据连接通常是不安全的，任何对计算机有足够知识的人都可能访问它(特别是如果使用标准HTTP而不是HTTPS))。</p>
+<p>VPN连接到一个预先定义的私有服务器(或服务器)，创建一个称为“隧道”的直接连接(尽管VPN越来越多地被使用，这个术语仍很少见)。您的系统和VPN服务器之间的直接连接是加密的，所有数据也是加密的。</p>
+<p>通过您在计算机上安装的客户端访问VPN。大多数VPN使用公钥加密。当您打开VPN客户端并使用您的凭据登录时，它会交换公钥，确认连接并保护您的网络流量。</p>
+<h2 id="为什么使用vpn">为什么使用VPN？</h2>
+<p>VPN加密您的网络流量。系统上所有涉及互联网连接的东西都是安全的，不会被人窥探。VPN的普及率在大幅上升，它们特别适用于：</p>
+<ul>
+<li>在公共Wi-Fi连接上保护您的数据</li>
+<li>访问受区域限制的内容</li>
+<li>访问敏感信息时的附加安全层</li>
+<li>保护您的隐私不受政府或其他入侵机构的侵害</li>
+</ul>
+<h2 id="vpn会保护我的隐私吗">VPN会保护我的隐私吗？</h2>
+<p>是的，一个VPN可以保护你的隐私，但是我之前提到的警告又来了。像大多数事情一样，你要为你得到的付出代价。有许多免费的VPN提供商，他们并不总是像你想的那样彻底地保护你。</p>
+<p>例如，许多免费的VPN提供商会记录所有用户及其互联网流量。因此，虽然加密的数据可以安全地进出您的计算机，以及进出他们的服务器，但是仍然有一个日志记录您正在做的事情。虽然大多数VPN提供商不打算把你变成当局，但他们在法律上有义务交出他们所知道的东西，如果有传票的话。如果您想要一个真正安全的、无日志的连接，请查看这六个<a href="https://www.makeuseof.com/tag/6-logless-vpns-take-privacy-seriously/">以隐私为中心的VPN</a>。</p>
+<p>VPN是一种非常棒和简单的方法，来拯救隐私，您无需更改常规浏览器，或改变您平时的浏览习惯和互联网使用策略。如果您正在考虑此选项，您可能还会考虑使用VPN终止开关(VPN kill switch)。</p>
+<h1 id="该选哪个">该选哪个？</h1>
+<p>如果您想要超级私密浏览，访问洋葱网站和暗网，并且不介意稍微降低互联网速度，请选择Tor。</p>
+<p>如果您希望通过分布式对等网络超级私有地访问隐藏服务和消息传递工具，并且仍然不介意网络速度略有下降，请选择I2P。</p>
+<p>最后，如果你想加密所有的进出网络流量，而且真的真的不介意互联网速度略有下降，选择一个VPN。</p>
+<p>有些人选择通过无日志VPN使用Tor浏览器。 其他人只需在他们想要在当地咖啡馆访问他们的网上银行时启动免费VPN(这是非常明智的)。无论如何，VPN现在是一个重要的可访问的安全和隐私技术，我建议任何人考虑。</p>
+<h1 id="最后">最后</h1>
+<p>本文章仅供学习交流，请勿用于非法用途，请遵守国家法律，否则产生的一切后果自行承担。</p>
+  
+  </div>
+</article>
+
+
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  ROESIN 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.css" integrity="sha384-Cqd8ihRLum0CCg8rz0hYKPoLZ3uw+gES2rXQXycqnL5pgVQIflxAUDS7ZSjITLb5" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/katex.min.js" integrity="sha384-1Or6BdeNQb0ezrmtGeqQHFpppNd7a/gw29xeiSikBbsb44xu3uAo8c7FwbF5jhbd" crossorigin="anonymous"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            });
+        </script>
+</html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ROESIN&#43;</title>
+    <link>https://roesinn.github.io/</link>
+    <description>Recent content on ROESIN&#43;</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>ROESIN</copyright>
+    <lastBuildDate>Tue, 16 Jun 2020 10:24:28 +0200</lastBuildDate><atom:link href="https://roesinn.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>安全多方计算协议</title>
+      <link>https://roesinn.github.io/post/mpc/</link>
+      <pubDate>Tue, 16 Jun 2020 10:24:28 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/mpc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OT扩展及优化</title>
+      <link>https://roesinn.github.io/post/otextension/</link>
+      <pubDate>Sun, 14 Jun 2020 19:17:33 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/otextension/</guid>
+      <description>我们有许多基于公钥密码学的OT协议，但计算代价高昂。而OT又常常用于构建安全计算协议(STPC/SMPC)：通常每个输入比特、每个电路门都要使用OT。计算一个函数要用到上百万个OT，如果只使用基于公钥密码学的OT，计算效率则会极低。
+然而，理论研究表明，没有黑盒压缩能将OT协议简化为单向函数(one-way function)。因此，仅用对称密码学构建OT协议是不可能的。如果使用类似混合加密或OTP加密的方法，是否有可能减少线上的计算代价呢？
+答案是肯定的：
+ OT协议可以被预计算：线下运行昂贵的公钥OT，线上只执行OTP加密。 OT协议可以被扩展 (简称OT扩展)：线下运行昂贵的公钥OT，线上执行较廉价的对称密码操作。  OT预计算的计算代价最小，运行速度最快，但要求线上的消息长度和线下预计算的消息长度一致。而OT扩展则没有这种限制，它在线上可以将线下的消息拉长为任意需要的长度。
+OT扩展的通信双方在线下预先对$\kappa$-bit 短字符串运行基于公钥密码学的OT协议，这种OT称为base OT或real OT。再于线上阶段使用一种对称密码学技巧将base OT扩展为以下两种OT：
+ 可以对长字符串($l$bit)使用的OT1。比如Beaver的OT扩展。 许多能对短字符串($\kappa$bit)执行的OT2。比如著名的 Ishai 的OT扩展。  Beaver的OT扩展 Ishai的OT扩展3 Ishai的OT扩展协议可以将$\kappa$个$OT_2^1$扩展为$m$个有效的$OT_2^1$，可以将消息长度为$\kappa$bit的$OT_2^1$扩展为$l$bit的$OT_2^1$。它和混合加密类似：先使用公钥密码算法，再使用对称密码算法。
+ OT扩展的理想功能性如下：  Alice输入$m$个$l$bit 长的字符对$(x_{j,0}, x_{j,1})$ Bob输入$m$bit 字符串$\bf {r}$, 并在第$j$次OT获得字符串$x_{j,r_i}$   OT扩展协议分为4个阶段。其中 1 为预计算，2-4为线上执行。
+  Alice 和 Bob 颠倒角色执行$\kappa$次 base OT。这种 base OT 基于$\kappa$bit 随机短字符串$(m_{i,0},m_{i,1})$，称为种子。 如图，Bob随机选择$\kappa$个$\kappa$bit 长的字符串对$(m_{i,0},m_{i,1})$, 不经意传输给Alice；Alice输入$\kappa$ bit 随机字符串$\bf {s}$选择$\kappa$对中的$m_{i,s_i}$
+  Bob生成一个$m \times \kappa$bit 的随机矩阵$\bf {T}$。然后拉长base OT的种子作为对称密钥，并与他的选择$\bf {r}$进行OTP加密（打码）。 如图，Bob首先生成一个$$m \times \kappa$$bit 的随机矩阵$\bf {T}$。用伪随机生成器PRG（比如AES）将种子$(m_{i,0},m_{i,1})$拉长($\kappa \to m$bit)，并和$\bf {T}$的每一列异或，对于拉长后的种子$m_{i,1}$，还要再和Bob$$m$bit选择$\bf {r}$异或。这个过程相当于对随机矩阵$\bf {T}$“打码”。 Bob将打码后的矩阵$\bf {T}$发送给Alice。Alice用PRG将她选择的种子$m_{i,s_i}$拉长($\kappa \to m$bit)，解密打码的矩阵$\bf {T}$得到矩阵$\bf {Q}$。若Alice在第$j$对种子里选择了$m_{i,0}$, 则获得$\bf {T}$的第$i$列；若选择了$m_{i,1}$, 则获得$\bf {T}$的第$i$列异或Bob的选择$\bf {r}$。</description>
+    </item>
+    
+    <item>
+      <title>混淆电路(三)：GMW协议</title>
+      <link>https://roesinn.github.io/post/garbledcircuit3/</link>
+      <pubDate>Sun, 14 Jun 2020 19:15:41 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit3/</guid>
+      <description>&lt;p&gt;继Yao之后，Goldreich, Micali和Wigderson在1987年提出了另一种用加密布尔电路计算函数的方案，简称GMW协议&lt;!-- raw HTML omitted --&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;!-- raw HTML omitted --&gt;。GMW协议包括&lt;strong&gt;安全两方计算&lt;/strong&gt;及&lt;strong&gt;安全多方计算&lt;/strong&gt;协议。这篇文章介绍GMW安全两方计算协议及优化实现，并与Yao的协议进行比较。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>混淆电路(二)：混淆电路构造的优化</title>
+      <link>https://roesinn.github.io/post/garbledcircuit2/</link>
+      <pubDate>Fri, 12 Jun 2020 17:04:41 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit2/</guid>
+      <description>&lt;p&gt;自姚1986年提出混淆电路构造(GC Construction)以来，许多学者都对这种构造进行了优化。目前最高效的GC构造是&lt;strong&gt;HalfGates&lt;/strong&gt;方案，它的电路规模(size)、加密代价(Garbled cost)和&amp;quot;解密&amp;quot;代价(Evaluation cost)都非常小。这些构造都属于&lt;strong&gt;基于电路的安全两方计算&lt;/strong&gt;协议。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>混淆电路(一)：姚氏混淆电路协议</title>
+      <link>https://roesinn.github.io/post/garbledcircuit/</link>
+      <pubDate>Tue, 09 Jun 2020 20:08:06 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/garbledcircuit/</guid>
+      <description>&lt;p&gt;随着云计算、协同计算等新型计算模型的出现，仅仅对消息加密已经不能满足人们的安全需求。在交给代理商进行计算之前，用户希望对&lt;strong&gt;输入&lt;/strong&gt;和&lt;strong&gt;函数本身&lt;/strong&gt;都进行加密，从而达到保护函数“内部信息”的目的，这就是&lt;strong&gt;安全计算&lt;/strong&gt;。混淆电路(Garbled Circuit)就是一种对函数或电路加密的方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>安全计算</title>
+      <link>https://roesinn.github.io/post/securecomp/</link>
+      <pubDate>Tue, 09 Jun 2020 16:50:31 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/securecomp/</guid>
+      <description>安全两方计算 混淆电路(一)
+1 安全多方计算 安全多方计算是一个密码学工具，允许互不信任的参与方根据自己的输入计算任意一个函数，计算过程不泄露除输出结果以外的任何信息。
+1.1 通用MPC框架/End-to-End MPC Frameworks  OT extension [YKNP03] Free XOR gates [KS08] Half-gats [ZRE15] AES-NI  </description>
+    </item>
+    
+    <item>
+      <title>密码协议中的安全参数</title>
+      <link>https://roesinn.github.io/post/securitypara/</link>
+      <pubDate>Mon, 01 Jun 2020 00:06:15 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/securitypara/</guid>
+      <description>&lt;p&gt;为了研究的方便，理论密码学家用安全参数(Security Parameter)来量化一个密码方案的安全性，从而进行密码协议的安全性分析。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CSS中的LCH颜色</title>
+      <link>https://roesinn.github.io/post/lch_in_css/</link>
+      <pubDate>Mon, 13 Apr 2020 17:11:49 +0200</pubDate>
+      
+      <guid>https://roesinn.github.io/post/lch_in_css/</guid>
+      <description>在W3C发布的CSS Color 4中定义了LCH颜色。它使用三个参数：亮度、彩度和色相(Lightness, Chroma, Hue)。目前，几乎所有的主流浏览器都已经开始考虑并实施它。
+为什么使用LCH？ 比起我们熟悉的RGB或HSL色彩空间(color space)，LCH有一些非常棒的优点。使它成为了“规则改变者”。为什么这么说呢？
+我们只能在网页中使用部分颜色 目前，我们可以指定的每个CSS颜色，都被定义在sRGB色彩空间里。这在几年前是足够的，因为除了专业显示器，所有显示器的色域（可能显示的颜色范围）都比sRGB小。然而今天多数显示器的色域更接近P3，P3的容量比sRGB大50%左右1，但CSS却无法使用它们。换句话说，现代显示器约三分之一的颜色空间都无法为我们所用，而这些正是屏幕上能显示的最生动的颜色。
+RGB是设备相关的，而LCH和Lab是独立于设备的，它们可以代表人类视觉的整个范围，因此无论硬件如何发展，它们都可以工作。
+LCH（与Lab）在视觉上是均匀的 在LCH中，相同的坐标数值变化会产生相同的感知色差，这种色彩空间的属性被称为「视觉均匀性（Perceptual uniformity）」。RGB或HSL在视觉上是不均匀的。请看下面这个例子：
+第一行的颜色和第二行的颜色在色相（hue）上都只差了20度，但给人的视觉差异感却完全不同，很明显，第一行对比更加强烈。
+LCH的亮度实际上是有意义的 在HSL中，亮度值（lightness）是无意义的。有着同样亮度值的两种颜色，感觉到的亮度差异却极大。
+这两种颜色的亮度值都是50%，但它们的亮度肯定不一样。有人认为，至少亮度值对色相饱和度（saturation）是有影响的，的确，如果我们增加HSL亮度，颜色会变浅，如果我们减少HSL亮度，颜色会变深，但这并不一定是相同的颜色：
+这两种颜色都有相同的色调和饱和度，但它们真的看起来像相同颜色的深色调和浅色调?
+对于LCH，任何具有相同亮度(lightness)的颜色都具有相同的感知亮度，任何具有相同彩度(chroma)的颜色都具有相同的感知饱和度。
+LCH是如何作用的？ LCH的三个参数（亮度、彩度和色相）大致对应于HSL，但有一些关键的区别。
+LCH的色相角度并不完全符合HSL的色相。例如，0不是红色，更像是品红；180不是绿松石色，更像是蓝绿色，这两者是完全互补的。
+注意这些颜色，尽管色相值差距很大，但它们的视觉亮度是一样的。
+在HSL中，饱和度的范围是0-100%，因为它是RGB到极坐标的简单转换。然而在LCH中，彩度在理论上是无界的。LCH（与Lab类似）被设计为一种能够描绘人类视觉全部光谱的工具，但并不是所有这些颜色都能在屏幕上显示出来，即使是P3屏幕。颜色的最大浓度值取决于屏幕色域，甚至颜色也是如此。
+通过一个例子可以更好地理解这一点。为简单起见，假设我们的屏幕的色域与sRGB色彩空间完全匹配（事实上，2013年的MacBook Air的屏幕色域约为sRGB的60%，大多数现代屏幕色域约为sRGB的150%)。对于L= 50 H=180（上面的青色），最大彩度只有35。对于L= 50 H=0（上面的品红色），彩度可以达到77，且不超过sRGB的界限。对于L=50 H=320（上面紫色的部分），彩度可以上升到108。
+虽然这种不确定性可能会令人不安，但不要担心：如果你使用了一个在给定显示器中不能显示的颜色，它将被缩小，以便在保持其本质的同时变得可见。毕竟，这并不是什么新鲜事：在显示器的色域超过sRGB之前，这就是在色域小于sRGB的监视器中显示常规CSS颜色时所发生的情况。
+一个LCH颜色选择器 CSS Color 5的编辑Lea Verou制作了一个用Mavo实现的LCH颜色选择器。
+这个LCH颜色选择器还不能显示sRGB之外的颜色，因为它是用web技术实现的，而sRGB之外的颜色现在不能用CSS显示。它会减少彩度，直到颜色在sRGB内。这就是为什么在超过某个数值之后，增加彩度不会产生一个更亮的颜色。
+本文原作者Lea Verou。
+  Tweet from Chirs Lilley, Jan 22, 2020, Jan 22, 2020. &amp;#x21a9;&amp;#xfe0e;
+   </description>
+    </item>
+    
+    <item>
+      <title>I2P，Tor和VPN哪个更安全?</title>
+      <link>https://roesinn.github.io/post/i2pvpntor/</link>
+      <pubDate>Sun, 01 Mar 2020 12:35:11 -0500</pubDate>
+      
+      <guid>https://roesinn.github.io/post/i2pvpntor/</guid>
+      <description>&lt;p&gt;翻译自&lt;a href=&#34;https://www.makeuseof.com/tag/i2p-vs-tor-vs-vpn-secure/&#34;&gt;原文&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;当我们讨论到安全和隐私时，有几个常见的缩写词在到处流传。你可能会看到隐私匿名浏览器Tor和VPN经常出现在在主流媒体文章，还有另一个值得考虑的选择：I2P。&lt;/p&gt;
+&lt;p&gt;但哪一种适合你呢？让我们探讨一下什么是I2P、Tor和VPN，&lt;strong&gt;以及哪一个适合你&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hexo参考文档汇总</title>
+      <link>https://roesinn.github.io/post/hexo_ref/</link>
+      <pubDate>Sun, 23 Feb 2020 12:35:11 -0500</pubDate>
+      
+      <guid>https://roesinn.github.io/post/hexo_ref/</guid>
+      <description> Hexo Documents - Customization——Hexo官方文档 NexT Documents——NexT主题官方文档 Hexo Plugins——Hexo插件合辑 Github Emojis——Github表情语法 Google Fonts——谷歌字体库 Fontawesome——Fontawesome图标库 highlight.js——highlight.js支持高亮的语言及风格 mermaid.js——mermaid流程图语法 flowchart.js——flowchart语法 js-sequence-diagrams——时序图语法  </description>
+    </item>
+    
+    <item>
+      <title>Hexo &#43; NexT 优化配置记录</title>
+      <link>https://roesinn.github.io/post/hexo-next-conf/</link>
+      <pubDate>Thu, 20 Feb 2020 12:35:11 -0500</pubDate>
+      
+      <guid>https://roesinn.github.io/post/hexo-next-conf/</guid>
+      <description>&lt;p&gt;本文收录我在Hexo建站初期对NexT主题进行的配置、陆陆续续用到的插件以及调试时遇到的问题。其中包含部分我的&lt;code&gt;custom.styl&lt;/code&gt; 代码以供参考。目前已改用Hugo。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://roesinn.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://roesinn.github.io/about/</guid>
+      <description>About the Site Here is a collection of personal (technical) articles and (virtual) works, which focuses mainly on cryptography, security and design.
+Profile I am currently a master student studying at Technical University of Darmstadt, whose research interest is privacy engineering. My productivity tools are MPB and Texudo, with wonderful Obsidian as the note management system. I develops with Python and Javascript most of the time, Cpp at the rest. Apart from those, I also spent my time on Typography Design.</description>
+    </item>
+    
+  </channel>
+</rss>
