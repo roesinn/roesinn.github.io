@@ -95,58 +95,58 @@
 </ul>
 <h2 id="经典方案cite2cite">经典方案<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted --></h2>
 <blockquote>
-<p>为所有线$$i$$分配随机的密钥对$$\textcolor{green}{k_i}, \textcolor{blue}{K_i}$$.</p>
+<p>为所有线$i$分配随机的密钥对$\textcolor{green}{k_i}, \textcolor{blue}{K_i}$.</p>
 <p>对每一个逻辑门使用双重加密，并且随机置换混淆表的位置：</p>
 <ul>
-<li>$$E_{\textcolor{green}a}(E_{\textcolor{green}b}(\textcolor{green}x))$$</li>
-<li>$$E_{\textcolor{green}a}(E_{\textcolor{blue}B}(\textcolor{green}x))$$</li>
-<li>$$E_{\textcolor{blue}A}(E_{\textcolor{green}b}(\textcolor{green}x))$$</li>
-<li>$$E_{\textcolor{blue}A}(E_{\textcolor{blue}B}(\textcolor{blue}X))$$</li>
+<li>$E_{\textcolor{green}a}(E_{\textcolor{green}b}(\textcolor{green}x))$</li>
+<li>$E_{\textcolor{green}a}(E_{\textcolor{blue}B}(\textcolor{green}x))$</li>
+<li>$E_{\textcolor{blue}A}(E_{\textcolor{green}b}(\textcolor{green}x))$</li>
+<li>$E_{\textcolor{blue}A}(E_{\textcolor{blue}B}(\textcolor{blue}X))$</li>
 </ul>
-<p>输出：每一条输出线$$i$$有映射$$[(\textcolor{green}0,\textcolor{green}{k_i}),(\textcolor{blue}1, \textcolor{blue}{K_i})]$$，即$$\textcolor{green}{k_i}$$为0-key，$$\textcolor{blue}{K_i}$$为1-key。</p>
+<p>输出：每一条输出线$i$有映射$[(\textcolor{green}0,\textcolor{green}{k_i}),(\textcolor{blue}1, \textcolor{blue}{K_i})]$，即$\textcolor{green}{k_i}$为0-key，$\textcolor{blue}{K_i}$为1-key。</p>
 </blockquote>
 <p>解密者需要知道<strong>哪一行</strong>可以被成功的解密。可以使用加密方程：</p>
 <ul>
-<li>$$E_k(m)=[r,F_k(r) \oplus (m \parallel 0^{\sigma})]$$, 这里$$F$$是伪随机函数，$$\sigma$$是统计安全参数。表示基于$$F$$的伪随机性，使用错误的$$k$$获得$$0^{\sigma}$$的概率可忽略不计</li>
+<li>$E_k(m)=[r,F_k(r) \oplus (m \parallel 0^{\sigma})]$, 这里$F$是伪随机函数，$\sigma$是统计安全参数。表示基于$F$的伪随机性，使用错误的$k$获得$0^{\sigma}$的概率可忽略不计</li>
 </ul>
 <p>解密者需要一行行解密混淆表，直到解密成功。平均需要的双重解密次数为 (1+2+3+4) / 4 = 2.5.</p>
 <h2 id="point-and-permute方案cite1cite">Point-and-Permute方案<!-- raw HTML omitted --><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted --></h2>
-<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->为混淆门每一条线$$i$$选择密钥（混淆值）的同时，选择一个<strong>随机的信号位$$p_i$$</strong>。将该混淆门两条输入线的信号位$$p_i,p_j$$串联在一起，作为指向混淆表位置的指针。</p>
-<p>对于同一条输入线，两种密钥对应的$$p_i$$须为相反数，这样才能让指针指向唯一的条目。假如0-key对应的信号比特是1，那么1-key对应的信号比特就是0。</p>
-<p>如图所示，我们为第一条输入线的密钥$$\tilde {x}^0$$随机选择一个信号位$$1$$，为第二条输入线的密钥$$\tilde {y}^0$$随机选择一个信号位$$0$$，则两条线另外的混淆值$$\tilde{x}^1$$和$$\tilde {y}^1$$的信号位分别是$$0$$和$$1$$。假设输入是$$\tilde {x}^0, \tilde {y}^0$$，将两个信号位串联得到10，因此解密混淆表中的条目2*1+0=2即可。这样，我们就不需要一个个尝试混淆表中的条目了，而是直接选择相应的条目进行解密。</p>
+<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->为混淆门每一条线$i$选择密钥（混淆值）的同时，选择一个<strong>随机的信号位$p_i$</strong>。将该混淆门两条输入线的信号位$p_i,p_j$串联在一起，作为指向混淆表位置的指针。</p>
+<p>对于同一条输入线，两种密钥对应的$p_i$须为相反数，这样才能让指针指向唯一的条目。假如0-key对应的信号比特是1，那么1-key对应的信号比特就是0。</p>
+<p>如图所示，我们为第一条输入线的密钥$\tilde {x}^0$随机选择一个信号位$1$，为第二条输入线的密钥$\tilde {y}^0$随机选择一个信号位$0$，则两条线另外的混淆值$\tilde{x}^1$和$\tilde {y}^1$的信号位分别是$0$和$1$。假设输入是$\tilde {x}^0, \tilde {y}^0$，将两个信号位串联得到10，因此解密混淆表中的条目2*1+0=2即可。这样，我们就不需要一个个尝试混淆表中的条目了，而是直接选择相应的条目进行解密。</p>
 <p><!-- raw HTML omitted --> <!-- raw HTML omitted --></p>
 <p>Point-and-Permute方案的优点是：</p>
 <ul>
 <li>只需要解密一个条目</li>
-<li>简化了输出解密的过程：如果输出$$\tilde{z}^0$$的信号位是0（即$$\tilde{z}^1$$的信号位是1），那么解密后的输出就是信号位；如果输出$$\tilde{z}^0$$的信号位是1（即$$\tilde{z}^1$$的信号位是0），那么解密后的输出就是信号位相反数。</li>
+<li>简化了输出解密的过程：如果输出$\tilde{z}^0$的信号位是0（即$\tilde{z}^1$的信号位是1），那么解密后的输出就是信号位；如果输出$\tilde{z}^0$的信号位是1（即$\tilde{z}^1$的信号位是0），那么解密后的输出就是信号位相反数。</li>
 </ul>
-<p>在接下来的方案中，我们默认使用point-and-permute方案。$$p(k)$$是密钥k的信号位。</p>
+<p>在接下来的方案中，我们默认使用point-and-permute方案。$p(k)$是密钥k的信号位。</p>
 <h2 id="3-row-reduction方案cite2cite">3-Row Reduction方案<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted --></h2>
-<p>设一个编号为$$T$$的混淆门左输入线的密钥为$$k_l$$, 右输入线的密钥为$$k_r$$, 输出线的密钥为$$k_o$$. 使用伪随机函数$$F$$ (比如AES) 将密钥信号位和混淆门编号$$T$$的长度扩展为密钥的长度。</p>
-<p>令加密函数为$$E^T(k_l,k_r;k_o)=k_0 \oplus F(k_l),p(k_l) \parallel T \oplus F(k_r,p(k_r) \parallel T)$$.</p>
-<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->通过将混淆表第一条加密值设置为0，即<strong>消除混淆表的第一行</strong>，来减少通信量。假设第一条的输入密钥为$$\textcolor{green}a, \textcolor{green}b$$，输出密钥为$$\textcolor{green}c$$。</p>
-<p>$$E^T(\textcolor{green}a,\textcolor{green}b;\textcolor{green}c)=\textcolor{green}c \oplus F(\textcolor{green}a),p(\textcolor{green}a) \parallel T \oplus F(\textcolor{green}b,p(\textcolor{green}b) \parallel T) \bf{=0}$$ $$\rArr \textcolor{green}c=F(\textcolor{green}a,p(\textcolor{green}a) \parallel T) \oplus F(\textcolor{green}b,p(\textcolor{green}b) \parallel T)$$
-$$\rArr$$其中一个输出密钥 (这里是$$\textcolor{green}c$$) 可以由输入密钥求得。</p>
+<p>设一个编号为$T$的混淆门左输入线的密钥为$k_l$, 右输入线的密钥为$k_r$, 输出线的密钥为$k_o$. 使用伪随机函数$F$ (比如AES) 将密钥信号位和混淆门编号$T$的长度扩展为密钥的长度。</p>
+<p>令加密函数为$E^T(k_l,k_r;k_o)=k_0 \oplus F(k_l),p(k_l) \parallel T \oplus F(k_r,p(k_r) \parallel T)$.</p>
+<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->通过将混淆表第一条加密值设置为0，即<strong>消除混淆表的第一行</strong>，来减少通信量。假设第一条的输入密钥为$\textcolor{green}a, \textcolor{green}b$，输出密钥为$\textcolor{green}c$。</p>
+<p>$E^T(\textcolor{green}a,\textcolor{green}b;\textcolor{green}c)=\textcolor{green}c \oplus F(\textcolor{green}a),p(\textcolor{green}a) \parallel T \oplus F(\textcolor{green}b,p(\textcolor{green}b) \parallel T) \bf{=0}$ $\rArr \textcolor{green}c=F(\textcolor{green}a,p(\textcolor{green}a) \parallel T) \oplus F(\textcolor{green}b,p(\textcolor{green}b) \parallel T)$
+$\rArr$其中一个输出密钥 (这里是$\textcolor{green}c$) 可以由输入密钥求得。</p>
 <p>表中剩下3行不变：</p>
 <ul>
-<li>$$E^T(\textcolor{green}a,\textcolor{blue}B;\textcolor{green}c)$$</li>
-<li>$$E^T(\textcolor{blue}A,\textcolor{green}b;\textcolor{green}c)$$</li>
-<li>$$E^T(\textcolor{blue}A,\textcolor{blue}B;\textcolor{blue}C)$$</li>
+<li>$E^T(\textcolor{green}a,\textcolor{blue}B;\textcolor{green}c)$</li>
+<li>$E^T(\textcolor{blue}A,\textcolor{green}b;\textcolor{green}c)$</li>
+<li>$E^T(\textcolor{blue}A,\textcolor{blue}B;\textcolor{blue}C)$</li>
 </ul>
 <p>3-Row Reduction方案的优点是：将每张表的通信代价从4行减小为3行。</p>
 <h2 id="free-xor方案cite3cite">Free XOR方案<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted --></h2>
 <p>该方案针对逻辑操作为<strong>异或</strong>的混淆门。</p>
-<p>令加密函数为$$E^T(k_l,k_r;k_o)=k_0 \oplus H(k_l \parallel k_r \parallel T)$$. 这里H是随机预言机RO, 可以用SHA-2实现。</p>
-<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->选择密钥对，使得每一对的<strong>距离为固定值</strong>$$R$$ ($$R$$可取定值128，且对于Client未知)。$$R=\textcolor{green}a \oplus \textcolor{blue}A = \textcolor{green}b \oplus \textcolor{blue}B = \textcolor{green}c \oplus \textcolor{blue}C = &hellip;$$
-设输出密钥$$\textcolor{green}c=\textcolor{green}a \oplus \textcolor{green}b$$。</p>
+<p>令加密函数为$E^T(k_l,k_r;k_o)=k_0 \oplus H(k_l \parallel k_r \parallel T)$. 这里H是随机预言机RO, 可以用SHA-2实现。</p>
+<p><!-- raw HTML omitted -->思路：<!-- raw HTML omitted -->选择密钥对，使得每一对的<strong>距离为固定值</strong>$R$ ($R$可取定值128，且对于Client未知)。$R=\textcolor{green}a \oplus \textcolor{blue}A = \textcolor{green}b \oplus \textcolor{blue}B = \textcolor{green}c \oplus \textcolor{blue}C = &hellip;$
+设输出密钥$\textcolor{green}c=\textcolor{green}a \oplus \textcolor{green}b$。</p>
 <p>正确性(异或操作)：</p>
 <ul>
-<li>$$\textcolor{green}c=\textcolor{green}a \oplus \textcolor{green}b=(R \oplus \textcolor{green}a) \oplus (R \oplus \textcolor{green}b)=\textcolor{blue}A \oplus \textcolor{blue}B$$</li>
-<li>$$\textcolor{blue}C=\textcolor{green}c \oplus R = \textcolor{green}a \oplus \textcolor{green}b \oplus R = \textcolor{green}a \oplus \textcolor{blue}B=\textcolor{blue}A \oplus \textcolor{green}b$$</li>
+<li>$\textcolor{green}c=\textcolor{green}a \oplus \textcolor{green}b=(R \oplus \textcolor{green}a) \oplus (R \oplus \textcolor{green}b)=\textcolor{blue}A \oplus \textcolor{blue}B$</li>
+<li>$\textcolor{blue}C=\textcolor{green}c \oplus R = \textcolor{green}a \oplus \textcolor{green}b \oplus R = \textcolor{green}a \oplus \textcolor{blue}B=\textcolor{blue}A \oplus \textcolor{green}b$</li>
 </ul>
 <p>安全性：</p>
 <ul>
-<li>Client只知道每条线的一个密钥，无法求出$$R$$</li>
+<li>Client只知道每条线的一个密钥，无法求出$R$</li>
 <li>需要使用随机预言机RO</li>
 </ul>
 <p>Free-XOR方案的优点是：计算代价很小，通信代价为0，即不需要将混淆表发送给对方。</p>
@@ -154,11 +154,11 @@ $$\rArr$$其中一个输出密钥 (这里是$$\textcolor{green}c$$) 可以由输
 <p>从2008年起，很多Intel和AMD的CPU都有了AES的硬件支持，即AES-NI。</p>
 <p>KreuterSS12<!-- raw HTML omitted --><sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><!-- raw HTML omitted -->方案的加密函数为</p>
 <ul>
-<li>$$E^T(k_l,k_r;k_o)=k_o \oplus AES\text{-}256(k_l \parallel k_r; T) \rArr$$ 每个门都需要运行AES。</li>
+<li>$E^T(k_l,k_r;k_o)=k_o \oplus AES\text{-}256(k_l \parallel k_r; T) \rArr$ 每个门都需要运行AES。</li>
 </ul>
 <p>BellareHKR13<!-- raw HTML omitted --><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup><!-- raw HTML omitted -->方案使用固定密钥的AES加密：</p>
 <ul>
-<li>选择一个固定的密钥$$X$$并执行一次AES: $$E^T(k_l,k_r;k_o)=k_o \oplus AES\text{-}128(X; K) \oplus K$$, 这里$$K=2k_l \oplus 4k_r \oplus T$$</li>
+<li>选择一个固定的密钥$X$并执行一次AES: $E^T(k_l,k_r;k_o)=k_o \oplus AES\text{-}128(X; K) \oplus K$, 这里$K=2k_l \oplus 4k_r \oplus T$</li>
 </ul>
 <p>这两种方案都可以与free-XOR和3-row reduction结合。</p>
 <h2 id="halfgates方案">HalfGates方案</h2>

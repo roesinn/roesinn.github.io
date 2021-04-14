@@ -87,62 +87,62 @@
 <!-- raw HTML omitted -->注：XOR和AND门数量和位置不限。</p>
 <blockquote>
 <!-- raw HTML omitted -->
-<p>参与者$$A,B$$的输入分别为$$a,b$$.</p>
+<p>参与者$A,B$的输入分别为$a,b$.</p>
 <ul>
-<li>$$A$$随机选择两个秘密值$$a_1,a_2$$，使得$$a=a_1 \oplus a_2$$. 保留$$a_1$$，分享$$a_2$$给$$B$$。</li>
-<li>$$B$$随机选择两个秘密值$$b_1,b_2$$，使得$$b=b_1 \oplus b_2$$. 保留$$b_2$$，分享$$b_1$$给$$A$$。</li>
+<li>$A$随机选择两个秘密值$a_1,a_2$，使得$a=a_1 \oplus a_2$. 保留$a_1$，分享$a_2$给$B$。</li>
+<li>$B$随机选择两个秘密值$b_1,b_2$，使得$b=b_1 \oplus b_2$. 保留$b_2$，分享$b_1$给$A$。</li>
 </ul>
-<p>非交互的XOR门：$$c_1=a_1 \oplus b_1; c_2=a_2 \oplus b_2$$.</p>
+<p>非交互的XOR门：$c_1=a_1 \oplus b_1; c_2=a_2 \oplus b_2$.</p>
 <p>交互的AND门：
 <!-- raw HTML omitted --></p>
-<p>重组得到最终输出：$$d=d_1 \oplus d_2$$</p>
+<p>重组得到最终输出：$d=d_1 \oplus d_2$</p>
 </blockquote>
 <h3 id="使用r-ot预计算乘法对cite2cite">使用R-OT预计算乘法对<!-- raw HTML omitted --><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup><!-- raw HTML omitted --></h3>
-<p>目标：使用2次随机OT(R-OT)生成一个<strong>乘法对</strong> $$c_1 \oplus c_2 = (a_1 \oplus a_2)(b_1 \oplus b_2)$$  <!-- raw HTML omitted -->
-（注：原GMW协议建议使用$$OT_4^1$$，这里的优化使用2次$$OT_2^1$$.）</p>
+<p>目标：使用2次随机OT(R-OT)生成一个<strong>乘法对</strong> $c_1 \oplus c_2 = (a_1 \oplus a_2)(b_1 \oplus b_2)$  <!-- raw HTML omitted -->
+（注：原GMW协议建议使用$OT_4^1$，这里的优化使用2次$OT_2^1$.）</p>
 <ul>
-<li>$$P_1$$的输出为：$$\textcolor{blue}{a_1,b_1,c_1}$$</li>
-<li>$$P_2$$的输出为：$$\textcolor{#EB4892}{a_2,b_2,c_2}$$</li>
-<li>特征：$$\textcolor{blue}{c_1} \oplus \textcolor{#EB4892}{c_2} = (a_1 \oplus a_2)(b_1 \oplus b_2) = \textcolor{blue}{a_1 b_1} \oplus \textcolor{#EB4892}{a_2} \textcolor{blue}{b_1} \oplus \textcolor{blue}{a_1} \textcolor{#EB4892}{b_2} \oplus \textcolor{#EB4892}{a_2 b_2}$$</li>
+<li>$P_1$的输出为：$\textcolor{blue}{a_1,b_1,c_1}$</li>
+<li>$P_2$的输出为：$\textcolor{#EB4892}{a_2,b_2,c_2}$</li>
+<li>特征：$\textcolor{blue}{c_1} \oplus \textcolor{#EB4892}{c_2} = (a_1 \oplus a_2)(b_1 \oplus b_2) = \textcolor{blue}{a_1 b_1} \oplus \textcolor{#EB4892}{a_2} \textcolor{blue}{b_1} \oplus \textcolor{blue}{a_1} \textcolor{#EB4892}{b_2} \oplus \textcolor{#EB4892}{a_2 b_2}$</li>
 </ul>
 <blockquote>
 <p>随机OT协议(Random-OT)如下：
 <!-- raw HTML omitted -->
-$$\circ$$ 双方执行R-OT协议，其中一方(sender)获得两位随机数$$x_0$$和$$x_1$$，另一方(receiver)输入选择位$$c$$，获得其中一位随机数$$x_c$$. <!-- raw HTML omitted -->
-$$\circ$$ R-OT协议是一种特定的<strong>不经意传输协议</strong>(Oblivious Transfer)，具体介绍请看<a href="">这里</a>。</p>
+$\circ$ 双方执行R-OT协议，其中一方(sender)获得两位随机数$x_0$和$x_1$，另一方(receiver)输入选择位$c$，获得其中一位随机数$x_c$. <!-- raw HTML omitted -->
+$\circ$ R-OT协议是一种特定的<strong>不经意传输协议</strong>(Oblivious Transfer)，具体介绍请看<a href="">这里</a>。</p>
 </blockquote>
 <p>下图(a)为预计算的理想功能，(b)为具体协议。</p>
 <!-- raw HTML omitted -->
 <p>协议内容如下：</p>
 <ol>
-<li>$$P_2$$选择$$\textcolor{#EB4892}{a_2} \in_R \lbrace 0,1 \rbrace $$</li>
-<li>$$P_1$$和$$P_2$$执行R-OT：$$P_1$$(sender)获得两位随机数$$(m_0,m_1)$$, $$P_2$$(receiver)输入$$\textcolor{#EB4892}{a_2}$$并获得其中一位$$u_2=m_{a_2}$$</li>
-<li>$$P_1$$设置$$\textcolor{blue}{b_1}=m_0 \oplus m_1$$及$$v_1=m_0$$
-<!-- raw HTML omitted --> $$\circ$$ 观察 $$v_1 \oplus u_2 = m_0 \oplus m_{a_2}$$
-<!-- raw HTML omitted --> $$\circ$$ 如果 $$a_2=0$$, 则$$v_1 \oplus u_2 = m_0 \oplus m_0=0=\textcolor{#eb4892}{a_2} \textcolor{blue}{b_1}$$
-<!-- raw HTML omitted --> $$\circ$$ 如果 $$a_2=1$$, 则$$v_1 \oplus u_2 = m_0 \oplus m_1=b_1=\textcolor{#eb4892}{a_2} \textcolor{blue}{b_1}$$</li>
-<li>$$P_1$$和$$P_2$$互换角色，重复步骤1-3获得$$(a_1,u_1)$$和$$(b_2,v_2)$$</li>
-<li>$$P_i$$设置$$c_i=(a_ib_i) \oplus u_i \oplus v_i$$</li>
+<li>$P_2$选择$\textcolor{#EB4892}{a_2} \in_R \lbrace 0,1 \rbrace $</li>
+<li>$P_1$和$P_2$执行R-OT：$P_1$(sender)获得两位随机数$(m_0,m_1)$, $P_2$(receiver)输入$\textcolor{#EB4892}{a_2}$并获得其中一位$u_2=m_{a_2}$</li>
+<li>$P_1$设置$\textcolor{blue}{b_1}=m_0 \oplus m_1$及$v_1=m_0$
+<!-- raw HTML omitted --> $\circ$ 观察 $v_1 \oplus u_2 = m_0 \oplus m_{a_2}$
+<!-- raw HTML omitted --> $\circ$ 如果 $a_2=0$, 则$v_1 \oplus u_2 = m_0 \oplus m_0=0=\textcolor{#eb4892}{a_2} \textcolor{blue}{b_1}$
+<!-- raw HTML omitted --> $\circ$ 如果 $a_2=1$, 则$v_1 \oplus u_2 = m_0 \oplus m_1=b_1=\textcolor{#eb4892}{a_2} \textcolor{blue}{b_1}$</li>
+<li>$P_1$和$P_2$互换角色，重复步骤1-3获得$(a_1,u_1)$和$(b_2,v_2)$</li>
+<li>$P_i$设置$c_i=(a_ib_i) \oplus u_i \oplus v_i$</li>
 </ol>
-<p>正确性：$$\textcolor{blue}{c_1} \oplus \textcolor{#eb4892}{c_2}=\textcolor{blue}{a_1b_1} \oplus \textcolor{blue}{u_1} \oplus \textcolor{blue}{v_1} \oplus \textcolor{#eb4892}{a_2b_2} \oplus \textcolor{#eb4892}{u_2} \oplus \textcolor{#eb4892}{v_2} = \textcolor{blue}{a_1 b_1} \oplus \textcolor{#EB4892}{a_2} \textcolor{blue}{b_1} \oplus \textcolor{blue}{a_1} \textcolor{#EB4892}{b_2} \oplus \textcolor{#EB4892}{a_2 b_2} $$</p>
+<p>正确性：$\textcolor{blue}{c_1} \oplus \textcolor{#eb4892}{c_2}=\textcolor{blue}{a_1b_1} \oplus \textcolor{blue}{u_1} \oplus \textcolor{blue}{v_1} \oplus \textcolor{#eb4892}{a_2b_2} \oplus \textcolor{#eb4892}{u_2} \oplus \textcolor{#eb4892}{v_2} = \textcolor{blue}{a_1 b_1} \oplus \textcolor{#EB4892}{a_2} \textcolor{blue}{b_1} \oplus \textcolor{blue}{a_1} \textcolor{#EB4892}{b_2} \oplus \textcolor{#EB4892}{a_2 b_2} $</p>
 <h3 id="使用乘法对在线计算and门输出cite3cite">使用乘法对在线计算AND门输出<!-- raw HTML omitted --><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup><!-- raw HTML omitted --></h3>
-<p>以下AND门输出为$$z=xy$$。$$x_1,y_1,z_1,x_2,y_2,z_2$$均为1bit。其中$$x=x_1 \oplus x_2$$; $$y=y_1 \oplus y_2$$; $$z=z_1 \oplus z_2$$.</p>
+<p>以下AND门输出为$z=xy$。$x_1,y_1,z_1,x_2,y_2,z_2$均为1bit。其中$x=x_1 \oplus x_2$; $y=y_1 \oplus y_2$; $z=z_1 \oplus z_2$.</p>
 <p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<p>目标：使用乘法对$$\textcolor{blue}{c_1} \oplus \textcolor{#eb4892}{c_2} = (\textcolor{blue}{a_1} \oplus \textcolor{#eb4892}{a_2})(\textcolor{blue}{b_1} \oplus \textcolor{#eb4892}{b_2})$$ 计算AND门输出。<!-- raw HTML omitted --></p>
+<p>目标：使用乘法对$\textcolor{blue}{c_1} \oplus \textcolor{#eb4892}{c_2} = (\textcolor{blue}{a_1} \oplus \textcolor{#eb4892}{a_2})(\textcolor{blue}{b_1} \oplus \textcolor{#eb4892}{b_2})$ 计算AND门输出。<!-- raw HTML omitted --></p>
 <ol>
-<li>$$P_1$$向$$P_2$$发送：$$d_1=x_1 \oplus \textcolor{blue}{a_1};e_1=y_1 \oplus \textcolor{blue}{b_1}$$</li>
-<li>$$P_2$$向$$P_1$$发送：$$d_2=x_2 \oplus \textcolor{#eb4892}{a_2};e_2=y_2 \oplus \textcolor{#eb4892}{b_2}$$</li>
-<li>$$P_1$$和$$P_2$$在本地计算：$$d=d_1 \oplus d_2; e=e_1 \oplus e_2$$</li>
-<li>$$P_1$$输出：$$\textcolor{blue}{z_1}=d \textcolor{blue}{b_1} \oplus e \textcolor{blue}{a_1} \oplus \textcolor{blue}{c_1} \oplus de$$</li>
-<li>$$P_2$$输出：$$\textcolor{#eb4892}{z_2}=d \textcolor{#eb4892}{b_2} \oplus e \textcolor{#eb4892}{a_2} \oplus \textcolor{#eb4892}{c_2}$$</li>
+<li>$P_1$向$P_2$发送：$d_1=x_1 \oplus \textcolor{blue}{a_1};e_1=y_1 \oplus \textcolor{blue}{b_1}$</li>
+<li>$P_2$向$P_1$发送：$d_2=x_2 \oplus \textcolor{#eb4892}{a_2};e_2=y_2 \oplus \textcolor{#eb4892}{b_2}$</li>
+<li>$P_1$和$P_2$在本地计算：$d=d_1 \oplus d_2; e=e_1 \oplus e_2$</li>
+<li>$P_1$输出：$\textcolor{blue}{z_1}=d \textcolor{blue}{b_1} \oplus e \textcolor{blue}{a_1} \oplus \textcolor{blue}{c_1} \oplus de$</li>
+<li>$P_2$输出：$\textcolor{#eb4892}{z_2}=d \textcolor{#eb4892}{b_2} \oplus e \textcolor{#eb4892}{a_2} \oplus \textcolor{#eb4892}{c_2}$</li>
 </ol>
 <p>正确性：<!-- raw HTML omitted -->
-$$z=\textcolor{blue}{z_1} \oplus \textcolor{#eb4892}{z_2}$$<!-- raw HTML omitted -->
-$$=d \textcolor{blue}{b_1} \oplus e \textcolor{blue}{a_1} \oplus \textcolor{blue}{c_1} \oplus de \oplus d \textcolor{#eb4892}{b_2} \oplus e \textcolor{#eb4892}{a_2} \oplus \textcolor{#eb4892}{c_2}$$<!-- raw HTML omitted -->
-$$ = db \oplus ea \oplus c \oplus de$$ <!-- raw HTML omitted -->
-$$ = (x \oplus a)b \oplus (y \oplus b)a \oplus ab \oplus (x \oplus a)(y \oplus b)$$<!-- raw HTML omitted -->
-$$=xb \oplus ab \oplus ya \oplus ba \oplus ab \oplus xy \oplus xb \oplus ay \oplus ab $$<!-- raw HTML omitted -->
-$$= xy$$</p>
+$z=\textcolor{blue}{z_1} \oplus \textcolor{#eb4892}{z_2}$<!-- raw HTML omitted -->
+$=d \textcolor{blue}{b_1} \oplus e \textcolor{blue}{a_1} \oplus \textcolor{blue}{c_1} \oplus de \oplus d \textcolor{#eb4892}{b_2} \oplus e \textcolor{#eb4892}{a_2} \oplus \textcolor{#eb4892}{c_2}$<!-- raw HTML omitted -->
+$ = db \oplus ea \oplus c \oplus de$ <!-- raw HTML omitted -->
+$ = (x \oplus a)b \oplus (y \oplus b)a \oplus ab \oplus (x \oplus a)(y \oplus b)$<!-- raw HTML omitted -->
+$=xb \oplus ab \oplus ya \oplus ba \oplus ab \oplus xy \oplus xb \oplus ay \oplus ab $<!-- raw HTML omitted -->
+$= xy$</p>
 <h1 id="gmw协议的优化实现">GMW协议的优化实现</h1>
 <p>GMW协议的实现分为起始阶段(Setup Phase)和在线阶段(Online Phase)。ChoiHKMR12<!-- raw HTML omitted --><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup><!-- raw HTML omitted -->首先实现了GMW协议。我们教授在这篇论文<!-- raw HTML omitted --><sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><!-- raw HTML omitted -->中对GMW协议的实现方案进行了比较。</p>
 <blockquote>
@@ -150,9 +150,9 @@ $$= xy$$</p>
 <p><img src="https://res.cloudinary.com/dyzugxjmt/image/upload/v1592215573/blog/1592215458296_lqyl9r.jpg" alt=""></p>
 </blockquote>
 <ul>
-<li><strong>MT</strong>: 交互AND门使用Beaver的乘法对<!-- raw HTML omitted --><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup><!-- raw HTML omitted -->。<!-- raw HTML omitted -->起始阶段：使用一次$$OT_4^1$$ <!-- raw HTML omitted -->在线阶段：并行发送2个独立的 2-bit 消息($$P_1 \to P_2: d_1,e_1; P_2 \to P_1: d_2, e_2$$)<!-- raw HTML omitted -->$$\rArr $$ 每层AND门1倍网络延迟。</li>
+<li><strong>MT</strong>: 交互AND门使用Beaver的乘法对<!-- raw HTML omitted --><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup><!-- raw HTML omitted -->。<!-- raw HTML omitted -->起始阶段：使用一次$OT_4^1$ <!-- raw HTML omitted -->在线阶段：并行发送2个独立的 2-bit 消息($P_1 \to P_2: d_1,e_1; P_2 \to P_1: d_2, e_2$)<!-- raw HTML omitted -->$\rArr $ 每层AND门1倍网络延迟。</li>
 <li><strong>PRF</strong>: <a href="">OT扩展</a>使用基于AES的伪随机函数（而非SHA-1）</li>
-<li><strong>LB</strong>: 负载平衡(Load Balancing)<!-- raw HTML omitted -->起始阶段：并行执行2个OT<!-- raw HTML omitted -->$$\rArr $$ 每方工作量相等。</li>
+<li><strong>LB</strong>: 负载平衡(Load Balancing)<!-- raw HTML omitted -->起始阶段：并行执行2个OT<!-- raw HTML omitted -->$\rArr $ 每方工作量相等。</li>
 <li><strong>GMP</strong>: 基本OT用GMP库取代NTL库。</li>
 <li><strong>Bytes</strong>: 在线阶段以字节（而非bit）处理数据。</li>
 <li><strong>SHA-1</strong>: 用OpenSSL实现SHA-1的编译执行（取代PolarSSL的C执行）</li>
@@ -168,13 +168,13 @@ $$= xy$$</p>
 <h1 id="比较yao和gmw协议">比较Yao和GMW协议</h1>
 <p><a href="https://roesinn.de/post/cryptoproto/garbledcircuit/">上上篇文章</a>介绍了Yao的安全两方计算协议。Yao的协议的特点是<strong>一步一步地执行</strong>。</p>
 <ul>
-<li>$$+$$ Yao的协议<strong>执行的轮数是常数</strong>。</li>
-<li>$$-$$ 电路解密需要<strong>线上</strong>执行<strong>对称密码算法</strong>。</li>
+<li>$+$ Yao的协议<strong>执行的轮数是常数</strong>。</li>
+<li>$-$ 电路解密需要<strong>线上</strong>执行<strong>对称密码算法</strong>。</li>
 </ul>
 <p>而GMW协议需要进行大量的<strong>起始准备工作</strong>，<strong>线上</strong>工作非常<strong>轻松</strong>。</p>
 <ul>
-<li>起始阶段：<!-- raw HTML omitted --> $$-$$ 使用2个R-OT为每个AND门预计算乘法对，轮数为常数。 <!-- raw HTML omitted --> $$+$$ 只需知道AND门的数量即可，与函数无关。</li>
-<li>在线阶段：<!-- raw HTML omitted --> $$+$$ 只需使用一次一密(OTP)对电路求值。<!-- raw HTML omitted -->$$-$$ 每个AND门都需要 2*2=4 bit 的通信开销。</li>
+<li>起始阶段：<!-- raw HTML omitted --> $-$ 使用2个R-OT为每个AND门预计算乘法对，轮数为常数。 <!-- raw HTML omitted --> $+$ 只需知道AND门的数量即可，与函数无关。</li>
+<li>在线阶段：<!-- raw HTML omitted --> $+$ 只需使用一次一密(OTP)对电路求值。<!-- raw HTML omitted -->$-$ 每个AND门都需要 2*2=4 bit 的通信开销。</li>
 </ul>
 <blockquote>
 <p>这里比较Yao (使用HalfGates方案实现) 和GMW (负载均衡) 协议：
@@ -186,13 +186,13 @@ S: Sender; R: Receiver</p>
 <h1 id="可安全计算的高效电路构造">可安全计算的高效电路构造</h1>
 <p>传统意义上高效的电路设计：</p>
 <ul>
-<li>减少电路门数 $$\rArr$$ 更小的芯片面积</li>
-<li>减少电路深度 $$\rArr$$ 更高的时钟频率</li>
+<li>减少电路门数 $\rArr$ 更小的芯片面积</li>
+<li>减少电路深度 $\rArr$ 更高的时钟频率</li>
 </ul>
 <p>可安全计算的高效的电路设计：</p>
 <ul>
-<li>减少AND门 (非XOR门) 数量 $$\rArr$$ 减少通信和计算开销</li>
-<li>减少AND门深度 $$\rArr$$ 减少GMW在线阶段的轮数</li>
+<li>减少AND门 (非XOR门) 数量 $\rArr$ 减少通信和计算开销</li>
+<li>减少AND门深度 $\rArr$ 减少GMW在线阶段的轮数</li>
 </ul>
 <p>可使用硬件描述语言（如Verilog或VHDL）自动生成优化电路。</p>
 <section class="footnotes" role="doc-endnotes">
