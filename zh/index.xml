@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ro2en - tech blog</title>
+    <link>https://ro2en.me/zh/</link>
+    <description>Recent content on ro2en - tech blog</description>
+    <image>
+      <title>ro2en - tech blog</title>
+      <url>https://ro2en.me/images/papermod-cover.png</url>
+      <link>https://ro2en.me/images/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- 0.124.1</generator>
+    <language>zh</language>
+    <copyright>2016-2024 ro2en - tech blog.</copyright>
+    <lastBuildDate>Tue, 11 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ro2en.me/zh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>密码协议中的安全参数</title>
+      <link>https://ro2en.me/zh/posts/securitypara/</link>
+      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://ro2en.me/zh/posts/securitypara/</guid>
+      <description>security parameters in cryptographic protocols</description>
+    </item>
+  </channel>
+</rss>
