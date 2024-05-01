@@ -12,8 +12,16 @@
     <generator>Hugo -- 0.124.1</generator>
     <language>en</language>
     <copyright>2016-2024 ro2en - tech blog.</copyright>
-    <lastBuildDate>Tue, 11 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Aug 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://ro2en.me/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using Frida to trigger XPC Activities</title>
+      <link>https://ro2en.me/posts/xpcactivity/</link>
+      <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://ro2en.me/posts/xpcactivity/</guid>
+      <description>A few months ago, I need to conduct dynamic analysis of a Daemon in a jailbroken iOS device, where the daemon is make up of some XPC Activities. Those XPC Activities could be found in the daemon&amp;rsquo;s configuration file (located at /System/Library/LaunchDaemons, with the .plist file extension) under the LaunchEvents field:
+# example daemon: audioanalyticsd $ plutil -p &amp;#34;/System/Library/LaunchDaemons/com.apple.audioanalyticsd.plist&amp;#34; # ... &amp;#34;Label&amp;#34; =&amp;gt; &amp;#34;com.apple.audioanalyticsd&amp;#34; &amp;#34;LaunchEvents&amp;#34; =&amp;gt; { # XPC activities &amp;#34;com.</description>
+    </item>
     <item>
       <title>Security Parameters in Cryptographic Protocols</title>
       <link>https://ro2en.me/posts/securitypara/</link>

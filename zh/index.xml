@@ -12,8 +12,15 @@
     <generator>Hugo -- 0.124.1</generator>
     <language>zh</language>
     <copyright>2016-2024 ro2en - tech blog.</copyright>
-    <lastBuildDate>Tue, 11 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Aug 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://ro2en.me/zh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Frida运行XPC活动</title>
+      <link>https://ro2en.me/zh/posts/xpcactivity/</link>
+      <pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://ro2en.me/zh/posts/xpcactivity/</guid>
+      <description>前不久，我的项目需要对一个 iOS 设备的系统级进程（Daemon）进行动态分析，这个进程由许多XPC活动（XPC Activities）组成。我们可</description>
+    </item>
     <item>
       <title>密码协议中的安全参数</title>
       <link>https://ro2en.me/zh/posts/securitypara/</link>

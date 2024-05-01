@@ -28,6 +28,25 @@
                 href="https://ro2en.me/zh/"
                 />
   </url><url>
+    <loc>https://ro2en.me/zh/zhtags/frida/</loc>
+    <lastmod>2023-08-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ro2en.me/zh/zhtags/</loc>
+    <lastmod>2023-08-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ro2en.me/zh/posts/xpcactivity/</loc>
+    <lastmod>2023-08-10T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ro2en.me/posts/xpcactivity/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://ro2en.me/zh/posts/xpcactivity/"
+                />
+  </url><url>
     <loc>https://ro2en.me/zh/posts/securitypara/</loc>
     <lastmod>2022-01-11T00:00:00+00:00</lastmod>
     <xhtml:link
@@ -68,7 +87,5 @@
     <loc>https://ro2en.me/zh/zhcategories/</loc>
   </url><url>
     <loc>https://ro2en.me/zh/zhseries/</loc>
-  </url><url>
-    <loc>https://ro2en.me/zh/zhtags/</loc>
   </url>
 </urlset>
